@@ -51,12 +51,14 @@ class User extends Authenticatable
     // Organizations this user belongs to
     public function organizations()
     {
-        return $this->belongsToMany(Organization::class, 'organization_user')->withTimestamps();
+        return $this->belongsToMany(Organization::class, 'organization_user')
+                    ->withPivot('role')
+                    ->withTimestamps();
     }
 
     // Organizations owned by this user
     public function ownedOrganizations()
     {
-        return $this->hasMany(organization::class, 'user_id');
+        return $this->hasMany(Organization::class, 'user_id');
     }
 }

@@ -15,58 +15,49 @@ use Illuminate\Http\JsonResponse;
 class OrganizationController extends Controller
 {
     // List all organizations the user belongs to
-    public function index(): JsonResponse
+    public function index()
     {
-        $organizations = auth()->user()->organizations;
-        return response()->json($organizations, 200);
+        $user = auth()->user();
+        $organizations = $user->organizations()->withPivot('role')->get();
+        return view('organizations.index', compact('organizations'));
     }
 
-    // Show a single organization
+    // Show the create organization page (Blade)
+    public function create()
+    {
+        return view('organizations.create');
+    }
+
+    // Show a single organization (JSON/API)
     public function show(Organization $organization): JsonResponse
     {
         $this->authorize('view', $organization);
         return response()->json($organization, 200);
     }
 
-    // Create a new organization
-    public function store(StoreOrganization $request, StoreOrganizationAction $action): JsonResponse
+    // Create a new organization (JSON/API)
+    public function store(StoreOrganization $request, StoreOrganizationAction $action)
     {
         $dto = OrganizationDTO::fromRequest($request);
         $this->authorize('create', Organization::class);
-        $organization = $action->handle($dto);
-        return response()->json($organization, 201);
-    }
 
-    // Update an existing organization
-    public function update(UpdateOrganization $request, Organization $organization, UpdateOrganizationAction $action): JsonResponse
-    {
-        $dto = OrganizationDTO::fromRequest($request);
-        $this->authorize('update', $organization);
         $organization = $action->handle($dto);
-        return response()->json($organization, 200);
+
+        if ($request->wantsJson()) {
+            return response()->json($organization, 201);
+        }
+
+        return redirect()->route('organizations.index')
+                         ->with('success', 'Organisation créée avec succès !');
     }
 
     // Delete an organization
-    public function destroy(DeleteOrganization $request, Organization $organization, DeleteOrganizationAction $action): JsonResponse
+    public function destroy(DeleteOrganization $request, Organization $organization, DeleteOrganizationAction $action)
     {
         $this->authorize('delete', $organization);
-        $action->handle(OrganizationDTO::fromRequest($request));
-        return response()->json(['message' => 'Organization deleted'], 200);
+        $action->handle($organization);
+
+        return redirect()->route('organizations.index')
+                         ->with('success', 'Organisation supprimée avec succès !');
     }
-
-    // Switch the current organization
-    public function switch(Organization $organization): JsonResponse
-    {
-        // Check if the user can view this organization
-        $this->authorize('view', $organization);
-
-        // Save the selected organization in the session
-        session(['current_organization_id' => $organization->id]);
-
-        return response()->json([
-            'message' => 'Organization switched',
-            'organization_id' => $organization->id
-        ], 200);
-    }
-
 }

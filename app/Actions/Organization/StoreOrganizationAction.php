@@ -22,7 +22,19 @@ final class StoreOrganizationAction
                 'user_id' => $dto->owner_id,
             ]);
 
-            $organization->members()->sync($dto->member_ids);
+            $membersWithRoles = [];
+
+            if (!empty($dto->member_ids)) {
+                foreach ($dto->member_ids as $userId) {
+                    if ($userId != $dto->owner_id) {
+                        $membersWithRoles[$userId] = ['role' => 'Member'];
+                    }
+                }
+            }
+
+            $membersWithRoles[$dto->owner_id] = ['role' => 'Admin'];
+
+            $organization->members()->sync($membersWithRoles);
 
             return $organization;
         });
