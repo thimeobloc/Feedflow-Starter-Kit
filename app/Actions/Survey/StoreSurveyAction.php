@@ -18,7 +18,7 @@ final class StoreSurveyAction
     {
         return DB::transaction(function () use ($dto) {
 
-            $survey = Survey::create([
+            return Survey::create([
                 'organization_id' => 1,
                 'user_id'         => 1,
                 'title' => $dto->title,
@@ -27,10 +27,6 @@ final class StoreSurveyAction
                 'end_date' => $dto->endDate,
                 'anonymous' => $dto->anonymat,
             ]);
-
-            return [
-                'survey' => $survey,
-            ];
         });
     }
 }

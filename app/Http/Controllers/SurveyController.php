@@ -7,17 +7,27 @@ use App\DTOs\SurveyDTO;
 use App\Http\Requests\Survey\StoreSurveyRequest;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use App\Models\Survey;
 
 class SurveyController extends Controller
 {
-    public function add(StoreSurveyRequest $request) :JsonResponse
+    public function index()
     {
-        $dto    = SurveyDTO::fromRequest($request);
-        $result = app(StoreSurveyAction::class)->execute($dto);
+        $surveys = Survey::orderBy('created_at', 'desc')->get();
 
-        return response()->json([
-            'message' => 'Sondage créé avec succès.',
-            'result' => $result,
+        return view('pages.survey', [
+            "surveys" => $surveys
         ]);
+
     }
+
+    public function add(StoreSurveyRequest $request, StoreSurveyAction $action)
+    {
+        $dto = SurveyDTO::fromRequest($request);
+        $action->execute($dto);
+
+        return redirect()->route('survey');
+    }
+
+
 }

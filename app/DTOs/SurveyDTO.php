@@ -17,7 +17,7 @@ final class SurveyDTO
         public string $description,
         public Carbon $startDate,
         public Carbon $endDate,
-        public bool $anonymat,
+        public bool   $anonymat,
     ) {}
 
     /**

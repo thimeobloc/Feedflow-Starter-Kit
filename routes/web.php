@@ -2,14 +2,13 @@
 
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\SurveyController;
 
 Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/dashboard', function () {return view('dashboard');})->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -18,11 +17,10 @@ Route::middleware('auth')->group(function () {
 });
 
 // Survey Routes
-    Route::post('/survey/store', [SurveyController::class, 'add'])->name('survey.store');
-    Route::patch('/survey/store', [SurveyController::class, 'update'])->name('survey.store');
-    Route::delete('/survey/store', [SurveyController::class, 'destroy'])->name('survey.store');
+    Route::get('/survey', [SurveyController::class, 'index'])->name('survey');
+    Route::post('/survey/add', [SurveyController::class, 'add'])->name('survey.add');
+    Route::patch('/survey/edit', [SurveyController::class, 'update'])->name('survey.edit');
+    Route::delete('/survey/destroy', [SurveyController::class, 'destroy'])->name('survey.destroy');
 
-
-Route::get('/survey/test', function() {return view('test_survey');});
 
 require __DIR__.'/auth.php';
