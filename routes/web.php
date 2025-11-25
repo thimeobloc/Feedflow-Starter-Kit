@@ -17,4 +17,12 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
+// Survey Routes
+    Route::post('/survey/store', [SurveyController::class, 'add'])->name('survey.store');
+    Route::patch('/survey/store', [SurveyController::class, 'update'])->name('survey.store');
+    Route::delete('/survey/store', [SurveyController::class, 'destroy'])->name('survey.store');
+
+
+Route::get('/survey/test', function() {return view('test_survey');});
+
 require __DIR__.'/auth.php';
