@@ -12,6 +12,11 @@ final class OrganizationDTO
     public static function fromRequest(Request $request): self
     {
         return new self(
+            $request->input('id', null),
+            $request->input('name'),
+            $request->user()->id,
+            $request->input('members', [])
         );
     }
+
 }

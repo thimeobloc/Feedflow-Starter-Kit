@@ -57,3 +57,24 @@ Route::middleware('auth')->group(function () {
     Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])
         ->name('logout');
 });
+
+Route::middleware('auth')->group(function () {
+    Route::get('/organizations', [OrganizationController::class, 'index'])
+        ->name('organizations.index');
+
+    Route::get('/organizations/{organization}', [OrganizationController::class, 'show'])
+        ->name('organizations.show');
+    Route::post('/organizations', [OrganizationController::class, 'store'])
+        ->name('organizations.store');
+
+    Route::put('/organizations/{organization}', [OrganizationController::class, 'update'])
+        ->name('organizations.update');
+
+    Route::delete('/organizations/{organization}', [OrganizationController::class, 'destroy'])
+        ->name('organizations.destroy');
+        
+    Route::post('/organizations/{organization}/switch', [OrganizationController::class, 'switch'])
+        ->name('organizations.switch');
+
+});
+
