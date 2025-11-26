@@ -19,9 +19,9 @@
                     </div>
                 @endif
 
-                <form method="POST" action="{{ route('organizations.update', $organization->id) }}">
+                <form method="POST" action="{{ route('organizations.update', $organization) }}">
                     @csrf
-                    @method('PUT')
+                    @method('PATCH')
 
                     <div class="mb-4">
                         <label class="block mb-1 font-medium">Nom de l'organisation</label>
@@ -32,47 +32,36 @@
                         <label class="block mb-1 font-medium">Membres</label>
 
                         @foreach($users as $user)
-                            <div class="flex items-center mb-1">
+                            @php
+                                $member = $organization->members->firstWhere('id', $user->id);
+                                $role = $member?->pivot?->role;
+                            @endphp
 
+                            <div class="flex items-center mb-1">
                                 <input type="checkbox"
                                        name="members[{{ $user->id }}][id]"
                                        value="{{ $user->id }}"
-                                       {{ $organization->members->contains($user) ? 'checked' : '' }}
-                                       {{ auth()->id() == $user->id ? 'checked disabled' : '' }}
+                                       {{ $member ? 'checked' : '' }}
+                                       {{ $user->id == $organization->user_id ? 'checked disabled' : '' }}
                                        class="mr-2">
 
                                 <span class="mr-2">
                                     {{ $user->first_name }} {{ $user->last_name }} ({{ $user->email }})
                                 </span>
 
-                                @php
-                                    $member = $organization->members->firstWhere('id', $user->id);
-                                    $role = $member?->pivot?->role;
-                                @endphp
-
                                 <select name="members[{{ $user->id }}][role]"
                                         class="border rounded px-2 py-1"
-                                        {{ auth()->id() == $user->id ? 'disabled' : '' }}
-                                        {{ $organization->members->contains($user) ? '' : 'required' }}>
+                                        {{ $user->id == $organization->user_id ? 'disabled' : '' }}
+                                        {{ $member ? '' : 'required' }}>
 
-                                    @if(!$role)
-                                        <option value="" selected disabled>Non choisi</option>
-                                    @endif
-
-                                    <option value="Admin"
-                                        {{ auth()->id() == $user->id ? 'selected' : ($role === 'Admin' ? 'selected' : '') }}>
-                                        Admin
-                                    </option>
-
-                                    <option value="Manager" {{ $role === 'Manager' ? 'selected' : '' }}>Manager</option>
-
-                                    <option value="Membre" {{ $role === 'Membre' ? 'selected' : '' }}>Membre</option>
+                                    <option value="" disabled {{ $role === null ? 'selected' : '' }}>Non choisi</option>
+                                    <option value="admin" {{ $role === 'admin' ? 'selected' : '' }}>Admin</option>
+                                    <option value="member" {{ $role === 'member' ? 'selected' : '' }}>Membre</option>
                                 </select>
 
-                                @if(auth()->id() == $user->id)
-                                    <input type="hidden" name="members[{{ $user->id }}][role]" value="Admin">
+                                @if($user->id == $organization->user_id)
+                                    <input type="hidden" name="members[{{ $user->id }}][role]" value="admin">
                                 @endif
-
                             </div>
                         @endforeach
                     </div>

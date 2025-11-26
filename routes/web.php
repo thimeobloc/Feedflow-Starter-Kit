@@ -14,17 +14,19 @@ Route::get('/dashboard', function () {
 
 Route::middleware('auth')->group(function () {
 
+    // Profil
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
+    // Organisations
     Route::get('/organization', [OrganizationController::class, 'index'])->name('organizations.index');
     Route::get('/organization/create', [OrganizationController::class, 'create'])->name('organizations.create');
-    Route::post('/organization', [OrganizationController::class, 'store'])->name('organizations.store');
+    Route::post('/organization/store', [OrganizationController::class, 'store'])->name('organizations.store');
 
     Route::get('/organization/{organization}/update', [OrganizationController::class, 'updateForm'])->name('organizations.updateForm');
-    Route::put('/organization/{organization}', [OrganizationController::class, 'update'])->name('organizations.update');
-    Route::delete('/organization/{organization}', [OrganizationController::class, 'destroy'])->name('organizations.destroy');
+    Route::patch('/organization/update/{organization}', [OrganizationController::class, 'update'])->name('organizations.update');
+    Route::delete('/organization/destroy/{organization}', [OrganizationController::class, 'destroy'])->name('organizations.destroy');
 });
 
 require __DIR__.'/auth.php';

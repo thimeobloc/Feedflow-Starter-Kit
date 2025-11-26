@@ -29,6 +29,7 @@ class OrganizationController extends Controller
     {
         $this->authorize('update', $organization);
         $users = \App\Models\User::all();
+        $organization->load('members'); // Important pour récupérer les rôles
         return view('organizations.update', compact('organization', 'users'));
     }
 
@@ -42,9 +43,9 @@ class OrganizationController extends Controller
 
     public function update(UpdateOrganization $request, Organization $organization, UpdateOrganizationAction $action)
     {
-        $dto = OrganizationDTO::fromRequest($request);
         $this->authorize('update', $organization);
-        $action->handle($dto);
+        $dto = OrganizationDTO::fromRequest($request);
+        $action->handle($dto, $organization);
         return redirect()->route('organizations.index')->with('success', 'Organisation mise à jour avec succès !');
     }
 

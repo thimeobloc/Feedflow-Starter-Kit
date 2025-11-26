@@ -18,7 +18,7 @@ class UpdateOrganization extends FormRequest
             'name' => 'required|string|max:255',
             'members' => 'array',
             'members.*.id' => 'exists:users,id',
-            'members.*.role' => 'in:Admin,Manager,Membre',
+            'members.*.role' => 'in:admin,member',
         ];
     }
 }
