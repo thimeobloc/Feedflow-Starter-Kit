@@ -12,6 +12,8 @@ use App\Http\Requests\Survey\DeleteSurveyRequest;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use App\Models\Survey;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Str;
 
 class SurveyController extends Controller
 {
@@ -22,8 +24,8 @@ class SurveyController extends Controller
     public function index(Survey $survey = null)
     {
         return view('pages.survey', [
-            "surveys"   => Survey::orderBy('created_at', 'desc')->get(),
-            "survey"    => $survey,
+            "surveys" => Survey::orderBy('created_at', 'desc')->get(),
+            "survey" => $survey,
         ]);
     }
 
@@ -53,6 +55,19 @@ class SurveyController extends Controller
         $action->execute($survey, $dto);
 
         return redirect()->route('survey');
+    }
+
+    public function showPublic($token)
+    {
+        $survey = Survey::where('token', $token)->firstOrFail();
+
+        $now = Carbon::now();
+
+        if ($now->lt($survey->start_date) || $now->gt($survey->end_date)) {
+            abort(403, 'Ce sondage nest pas actif.');
+        }
+
+        return view('pages.question', compact('survey'));
     }
 
 }

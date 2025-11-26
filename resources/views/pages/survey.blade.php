@@ -13,12 +13,13 @@
         <a href="{{ route('survey') }}">Refresh</a>
     </div>
 
-    <form id="surveyForm" method="POST" action="{{ $survey ? route('survey.update', $survey) : route('survey.store') }}">
+    <form id="surveyForm" method="POST"
+          action="{{ $survey ? route('survey.update', $survey) : route('survey.store') }}">
         @csrf
         @if($survey)
             @method('PATCH')
         @endif
-{{--        <meta name="csrf-token" content="{{ csrf_token() }}">--}}
+        {{--        <meta name="csrf-token" content="{{ csrf_token() }}">--}}
 
         <div>
             <label for="title">Titre :</label>
@@ -32,12 +33,14 @@
 
         <div>
             <label for="start_date">Date de début :</label>
-            <input type="date" name="start_date" id="start_date" value="{{ $survey ? \Carbon\Carbon::parse($survey->start_date)->format('Y-m-d') : ''}}" required>
+            <input type="date" name="start_date" id="start_date"
+                   value="{{ $survey ? \Carbon\Carbon::parse($survey->start_date)->format('Y-m-d') : ''}}" required>
         </div>
 
         <div>
             <label for="end_date">Date de fin :</label>
-            <input type="date" name="end_date" id="end_date" value="{{ $survey ? \Carbon\Carbon::parse($survey->end_date)->format('Y-m-d') : ''}}" required>
+            <input type="date" name="end_date" id="end_date"
+                   value="{{ $survey ? \Carbon\Carbon::parse($survey->end_date)->format('Y-m-d') : ''}}" required>
         </div>
 
         <div>
@@ -58,28 +61,29 @@
             <p class="text-gray-600">Aucun sondage trouvé.</p>
         @else
             @foreach ($surveys as $survey)
-                <div class="border rounded p-4 mb-4 bg-white shadow">
-                    <h2 class="text-xl font-bold">{{ $survey->title }}</h2>
-                    <p>{{ $survey->description }}</p>
+                <a href="{{ route('question', $survey->token) }}" target="_blank" class="text-blue-600 underline">
+                    <div class="border rounded p-4 mb-4 bg-white shadow">
+                        <h2 class="text-xl font-bold">{{ $survey->title }}</h2>
+                        <p>{{ $survey->description }}</p>
 
-                    <div class="text-sm text-gray-600 mt-2">
-                        Début : {{ $survey->start_date }}
-                        <br>
-                        Fin : {{ $survey->end_date }}
-                        <br>
-                        Anonyme : {{ $survey->is_anonymous }}
+                        <div class="text-sm text-gray-600 mt-2">
+                            Début : {{ $survey->start_date }}
+                            <br>
+                            Fin : {{ $survey->end_date }}
+                            <br>
+                            Anonyme : {{ $survey->is_anonymous }}
+                        </div>
+                        <a href="{{ route('survey', $survey) }}">Modifier</a>
+                        <form action="{{ route('survey.destroy', $survey) }}" method="POST">
+                            @csrf
+                            @method('DELETE')
+                            <button>Supprimer</button>
+                        </form>
                     </div>
-                    <a href="{{ route('survey', $survey) }}">Modifier</a>
-                    <form action="{{ route('survey.destroy', $survey) }}" method="POST">
-                        @csrf
-                        @method('DELETE')
-                        <button>Supprimer</button>
-                    </form>
-                </div>
+                </a>
             @endforeach
         @endif
     </div>
-    </form>
     </body>
     </html>
 

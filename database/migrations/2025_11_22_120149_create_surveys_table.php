@@ -22,6 +22,7 @@ return new class extends Migration
             $table->dateTime('start_date');
             $table->dateTime('end_date');
             $table->boolean('is_anonymous')->default(false);
+            $table->string('token');
             $table->timestamps();
 
             $table->foreign('organization_id')->references('id')->on('organizations');
