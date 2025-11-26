@@ -45,7 +45,7 @@ class SurveyPolicy
      */
     public function delete(User $user, Survey $survey): bool
     {
-        return false;
+        return $user->role === 'admin' || $survey->user_id === $user->id;;
     }
 
     /**

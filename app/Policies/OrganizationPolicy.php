@@ -13,7 +13,7 @@ class OrganizationPolicy
      */
     public function viewAny(User $user): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -21,15 +21,17 @@ class OrganizationPolicy
      */
     public function view(User $user, Organization $organization): bool
     {
-        return false;
+        // Members or owner can view
+        return $organization->members->contains($user) || $organization->user_id === $user->id;
     }
+
 
     /**
      * Determine whether the user can create models.
      */
     public function create(User $user): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -37,16 +39,20 @@ class OrganizationPolicy
      */
     public function update(User $user, Organization $organization): bool
     {
-        return false;
+        // Only the owner of the organization can update it
+        return $organization->user_id === $user->id;
     }
+
 
     /**
      * Determine whether the user can delete the model.
      */
     public function delete(User $user, Organization $organization): bool
     {
-        return false;
+        // Only the owner can delete
+        return $organization->user_id === $user->id;
     }
+
 
     /**
      * Determine whether the user can restore the model.

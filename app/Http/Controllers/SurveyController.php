@@ -6,12 +6,14 @@ use App\Actions\Survey\CloseSurveyAction;
 use App\Actions\Survey\StoreSurveyAction;
 use App\Actions\Survey\UpdateSurveyAction;
 use App\DTOs\SurveyDTO;
-use App\Http\Requests\Survey\DeleteSurveyRequest;
 use App\Http\Requests\Survey\StoreSurveyRequest;
 use App\Http\Requests\Survey\UpdateSurveyRequest;
+use App\Http\Requests\Survey\DeleteSurveyRequest;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use App\Models\Survey;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Str;
 
 class SurveyController extends Controller
 {
@@ -22,8 +24,8 @@ class SurveyController extends Controller
     public function index(Survey $survey = null)
     {
         return view('pages.survey', [
-            "surveys"   => Survey::orderBy('created_at', 'desc')->get(),
-            "survey"    => $survey,
+            "surveys" => Survey::orderBy('created_at', 'desc')->get(),
+            "survey" => $survey,
         ]);
     }
 
@@ -47,10 +49,25 @@ class SurveyController extends Controller
         return redirect()->route('survey');
     }
 
-    public function update(Survey $survey, StoreSurveyRequest $request)
+    public function update(UpdateSurveyRequest $request, UpdateSurveyAction $action, Survey $survey)
     {
-        $survey->update($request->only('title', 'description', 'start_date', 'end_date', 'anonymous'));
+        $dto = SurveyDTO::fromUpdateRequest($request);
+        $action->execute($survey, $dto);
+
         return redirect()->route('survey');
+    }
+
+    public function showPublic($token)
+    {
+        $survey = Survey::where('token', $token)->firstOrFail();
+
+        $now = Carbon::now();
+
+        if ($now->lt($survey->start_date) || $now->gt($survey->end_date)) {
+            abort(403, 'Ce sondage nest pas actif.');
+        }
+
+        return view('survey.public', compact('survey'));
     }
 
 }
