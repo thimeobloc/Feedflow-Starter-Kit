@@ -10,11 +10,11 @@
     <h1>{{ $survey ? "Modifier" : "Créer un nouveau" }} Sondage</h1>
 
     <div class="refresh">
-        <a href="{{ route('survey') }}">Refresh</a>
+        <a href="{{ route('survey', $organization->id) }}">Refresh</a>
     </div>
 
     <form id="surveyForm" method="POST"
-          action="{{ $survey ? route('survey.update', $survey) : route('survey.store') }}">
+          action="{{ $survey ? route('survey.update', $survey) : route('survey.store', $organizationId) }}">
         @csrf
         @if($survey)
             @method('PATCH')

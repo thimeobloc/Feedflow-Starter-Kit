@@ -4,6 +4,7 @@ use Illuminate\Support\Str;
 use App\DTOs\SurveyDTO;
 use App\Models\Survey;
 use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\SurveyController;
 
 final class StoreSurveyAction
 {
@@ -14,19 +15,19 @@ final class StoreSurveyAction
      * Cette classe ne connaît ni la Request, ni le contrôleur.
      * Elle se concentre uniquement sur le "métier".
      */
-    public function execute(SurveyDTO $dto): Survey
+    public function execute(SurveyDTO $dto, int $organization): Survey
     {
-        return DB::transaction(function () use ($dto) {
+        return DB::transaction(function () use ($dto, $organization) {
 
             return Survey::create([
-                'organization_id' => 1,
+                'organization_id' => $organization,
                 'user_id'         => 1,
                 'title' => $dto->title,
                 'description' => $dto->description,
                 'start_date' => $dto->startDate,
                 'end_date' => $dto->endDate,
                 'is_anonymous' => $dto->anonymat,
-                'token' => Str::random(32)
+                'token' => Str::random(32),
             ]);
         });
     }

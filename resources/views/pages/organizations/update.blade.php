@@ -34,10 +34,10 @@
                         @foreach($users as $user)
                             @php
                                 $member = $organization->members->firstWhere('id', $user->id);
-                                $role = $member?->pivot?->role;
+                                $role = $member?->pivot?->role ?? null; // Met null si pas de rôle
                             @endphp
 
-                            <div class="flex items-center mb-1">
+                            <div class="flex items-center mb-2 space-x-3">
                                 <input type="checkbox"
                                        name="members[{{ $user->id }}][id]"
                                        value="{{ $user->id }}"
@@ -54,10 +54,15 @@
                                         {{ $user->id == $organization->user_id ? 'disabled' : '' }}
                                         {{ $member ? '' : 'required' }}>
 
-                                    <option value="" disabled {{ $role === null ? 'selected' : '' }}>Non choisi</option>
+                                    <option value="" {{ $role === null ? 'selected' : '' }}>Non choisi</option>
                                     <option value="admin" {{ $role === 'admin' ? 'selected' : '' }}>Admin</option>
                                     <option value="member" {{ $role === 'member' ? 'selected' : '' }}>Membre</option>
                                 </select>
+
+                                {{-- Affichage du rôle actuel --}}
+                                <span class="ml-2 text-gray-600">
+                                    Role actuel : <strong>{{ $role ?? 'Aucun' }}</strong>
+                                </span>
 
                                 @if($user->id == $organization->user_id)
                                     <input type="hidden" name="members[{{ $user->id }}][role]" value="admin">
