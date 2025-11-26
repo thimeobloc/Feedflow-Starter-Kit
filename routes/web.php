@@ -3,6 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SurveyController;
+use App\Http\Controllers\QuestionsController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -22,5 +23,11 @@ Route::get('/survey/{survey?}', [SurveyController::class, 'index'])->name('surve
 Route::post('/survey/store', [SurveyController::class, 'store'])->name('survey.store');
 Route::put('/survey/update/{survey}', [SurveyController::class, 'update'])->name('survey.update');
 Route::delete('/survey/delete/{survey}', [SurveyController::class, 'destroy'])->name('survey.destroy');
+
+// Question Routes
+Route::get('/question/{survey?}', [QuestionsController::class, 'index'])->name('question');
+
+// Answer Routes
+Route::post('/answers/store', [QuestionsController::class, 'store'])->name('answers.store');
 
 require __DIR__.'/auth.php';

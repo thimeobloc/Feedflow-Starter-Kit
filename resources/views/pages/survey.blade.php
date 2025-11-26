@@ -53,35 +53,36 @@
         <button type="submit">{{ $survey ? 'Modifier' : 'Créer' }} le sondage</button>
     </form>
     <div id="response" style="margin-top:20px;"></div>
+ 
+        <div class="max-w-6xl mx-auto py-8">
+            <h1 class="text-3xl font-bold mb-6">Liste des sondages</h1>
+            @if($surveys->isEmpty())
+                <p class="text-gray-600">Aucun sondage trouvé.</p>
+            @else
+                @foreach ($surveys as $survey)
+                   <a href="/question/{{ $survey->id }}">
+                        <div class="border rounded p-4 mb-4 bg-white shadow">
+                            <h2 class="text-xl font-bold">{{ $survey->title }}</h2>
+                            <p>{{ $survey->description }}</p>
 
-    <div class="max-w-6xl mx-auto py-8">
-        <h1 class="text-3xl font-bold mb-6">Liste des sondages</h1>
-        @if($surveys->isEmpty())
-            <p class="text-gray-600">Aucun sondage trouvé.</p>
-        @else
-            @foreach ($surveys as $survey)
-                <div class="border rounded p-4 mb-4 bg-white shadow">
-                    <h2 class="text-xl font-bold">{{ $survey->title }}</h2>
-                    <p>{{ $survey->description }}</p>
-
-                    <div class="text-sm text-gray-600 mt-2">
-                        Début : {{ $survey->start_date }}
-                        <br>
-                        Fin : {{ $survey->end_date }}
-                        <br>
-                        Anonyme : {{ $survey->is_anonymous }}
-                    </div>
-                    <a href="{{ route('survey', $survey) }}">Modifier</a>
-                    <form action="{{ route('survey.destroy', $survey) }}" method="POST">
-                        @csrf
-                        @method('DELETE')
-                        <button>Supprimer</button>
-                    </form>
-                </div>
-            @endforeach
-        @endif
-
-    </div>
+                            <div class="text-sm text-gray-600 mt-2">
+                                Début : {{ $survey->start_date }}
+                                <br>
+                                Fin : {{ $survey->end_date }}
+                                <br>
+                                Anonyme : {{ $survey->is_anonymous }}
+                            </div>
+                            <a href="{{ route('survey', $survey) }}">Modifier</a>
+                            <form action="{{ route('survey.destroy', $survey) }}" method="POST">
+                                @csrf
+                                @method('DELETE')
+                                <button>Supprimer</button>
+                            </form>
+                        </div>
+                    </a>
+                @endforeach
+            @endif
+        </div>
     </form>
     </body>
     </html>
