@@ -53,6 +53,9 @@
                                                     Supprimer
                                                 </button>
                                             </form>
+                                            <a href="{{ route('survey', $org->id) }}" class="px-3 py-1 bg-yellow-600 text-white rounded hover:bg-yellow-700">
+                                                Sondages
+                                            </a>
                                         @endif
                                     </td>
                                 </tr>

@@ -2,15 +2,15 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\OrganizationController;
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SurveyController;
 use App\Http\Controllers\QuestionsController;
+use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', fn() => view('welcome'));
 
-Route::get('/dashboard', function () {return view('dashboard');})->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/dashboard', fn() => view('dashboard'))
+    ->middleware(['auth', 'verified'])
+    ->name('dashboard');
 
 Route::middleware('auth')->group(function () {
 
@@ -23,23 +23,23 @@ Route::middleware('auth')->group(function () {
     Route::get('/organization', [OrganizationController::class, 'index'])->name('organizations.index');
     Route::get('/organization/create', [OrganizationController::class, 'create'])->name('organizations.create');
     Route::post('/organization/store', [OrganizationController::class, 'store'])->name('organizations.store');
-
     Route::get('/organization/{organization}/update', [OrganizationController::class, 'updateForm'])->name('organizations.updateForm');
     Route::patch('/organization/update/{organization}', [OrganizationController::class, 'update'])->name('organizations.update');
     Route::delete('/organization/destroy/{organization}', [OrganizationController::class, 'destroy'])->name('organizations.destroy');
+
+    // Sondages
+    Route::prefix('survey')->group(function () {
+        Route::get('/{organization}', [SurveyController::class, 'index'])->name('survey');
+        Route::post('/store/{organization}', [SurveyController::class, 'store'])->name('survey.store');
+        Route::patch('/update/{survey}', [SurveyController::class, 'update'])->name('survey.update');
+        Route::delete('/delete/{survey}', [SurveyController::class, 'destroy'])->name('survey.destroy');
+    });
 });
 
-    // Survey Routes
-    Route::get('/survey/{survey?}', [SurveyController::class, 'index'])->name('survey');
+// Sondage public accessible sans login
+Route::get('/question/{token}', [SurveyController::class, 'showPublic'])->name('question');
 
-    Route::post('/survey/store', [SurveyController::class, 'store'])->name('survey.store');
-    Route::patch('/survey/update/{survey}', [SurveyController::class, 'update'])->name('survey.update');
-    Route::delete('/survey/delete/{survey}', [SurveyController::class, 'destroy'])->name('survey.destroy');
-
-    // Question Routes
-    Route ::get('/question/{token}', [SurveyController::class, 'showPublic'])->name('question');
-
-    // Answer Routes
-    Route::post('/answers/store', [QuestionsController::class, 'store'])->name('answers.store');
+// Réponses aux sondages
+Route::post('/answers/store', [QuestionsController::class, 'store'])->name('answers.store');
 
 require __DIR__.'/auth.php';

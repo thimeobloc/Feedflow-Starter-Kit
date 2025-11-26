@@ -18,8 +18,9 @@ class Organization extends Model
     // Users belonging to this organization
     public function members()
     {
-        return $this->belongsToMany(User::class, 'organization_user')->withTimestamps();
+        return $this->belongsToMany(User::class, 'organization_user')->withPivot('role')->withTimestamps();
     }
+
 
     // Owner of the organization
     public function owner()
