@@ -82,6 +82,7 @@ class SurveyController extends Controller
     public function showPublic($token)
     {
         $survey = Survey::where('token', $token)->firstOrFail();
+        $questions = $survey->questions()->orderBy('created_at', 'desc')->get();
 
         $now = Carbon::now();
 
@@ -89,6 +90,6 @@ class SurveyController extends Controller
             abort(403, 'Ce sondage n\'est pas actif.');
         }
 
-        return view('pages.surveys.question', compact('survey'));
+        return view('pages.surveys.question', compact('survey','questions', 'token'));
     }
 }

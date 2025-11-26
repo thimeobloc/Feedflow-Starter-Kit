@@ -16,14 +16,14 @@ final class StoreSurveyQuestionAction
      * @return array
      */
 
-    public function execute(SurveyQuestionDTO $dto): array
+    public function execute(SurveyQuestionDTO $dto, $survey)
     {
-        return DB::transaction(function () use ($dto) {
+        return DB::transaction(function () use ($dto, $survey) {
             return SurveyQuestion::create([
-                'survey_id'         => 1,
+                'survey_id'         => $survey->id,
                 'title' => $dto->title,
                 'question_type' => $dto->question_type,
-                'options' => []
+                'options' => $dto->options ?? [],
             ]);
         });
     }

@@ -13,17 +13,33 @@ class QuestionsController extends Controller
 {
     public function index(Survey $survey)
     {
-        return view('pages.question', [
+        return view('pages.surveys.question', [
             "questions" => $survey->questions()->orderBy('created_at', 'desc')->get(),
             "survey" => $survey,
         ]);
     }
 
-    public function store(StoreSurveyQuestionRequest $request, StoreSurveyQuestionAction $action)
+    public function store(StoreSurveyQuestionRequest $request, StoreSurveyQuestionAction $action, Survey $survey)
     {
         $dto = SurveyQuestionDTO::fromRequest($request);
-        $action->execute($dto);
+        $action->execute($dto, $survey);
+        $token = $survey->token;
 
-        return redirect()->route('survey');
+        return redirect()->route('question', [
+            "survey" => $survey,
+            "token" => $token,
+            ]);
+    }
+
+    public function update(StoreSurveyQuestionRequest $request, StoreSurveyQuestionAction $action, Survey $survey)
+    {
+        $dto = SurveyQuestionDTO::fromRequest($request);
+        $action->execute($dto, $survey);
+        $token = $survey->token;
+
+        return redirect()->route('question', [
+            "survey" => $survey,
+            "token" => $token,
+        ]);
     }
 }

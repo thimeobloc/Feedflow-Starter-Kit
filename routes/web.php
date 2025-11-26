@@ -38,6 +38,7 @@ Route::middleware('auth')->group(function () {
 
 // Sondage public accessible sans login
 Route::get('/question/{token}', [SurveyController::class, 'showPublic'])->name('question');
+Route::patch('/question/{token}/{option?}', [SurveyController::class, 'showPublic'])->name('question');
 Route ::post('/question/{survey}', [QuestionsController::class, 'store'])->name('question.store');
 
 Route::post('/answers/store', [QuestionsController::class, 'store'])->name('answers.store');
