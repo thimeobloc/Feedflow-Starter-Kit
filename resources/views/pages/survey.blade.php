@@ -56,7 +56,6 @@
 
     <div class="max-w-6xl mx-auto py-8">
         <h1 class="text-3xl font-bold mb-6">Liste des sondages</h1>
-
         @if($surveys->isEmpty())
             <p class="text-gray-600">Aucun sondage trouvé.</p>
         @else
@@ -70,7 +69,7 @@
                         <br>
                         Fin : {{ $survey->end_date }}
                         <br>
-                        Anonyme : {{ $survey->anonymous }}
+                        Anonyme : {{ $survey->is_anonymous }}
                     </div>
                     <a href="{{ route('survey', $survey) }}">Modifier</a>
                     <form action="{{ route('survey.destroy', $survey) }}" method="POST">

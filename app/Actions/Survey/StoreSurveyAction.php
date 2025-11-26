@@ -25,7 +25,7 @@ final class StoreSurveyAction
                 'description' => $dto->description,
                 'start_date' => $dto->startDate,
                 'end_date' => $dto->endDate,
-                'anonymous' => $dto->anonymat,
+                'is_anonymous' => $dto->anonymat,
             ]);
         });
     }
