@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\OrganizationController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SurveyController;
+use App\Http\Controllers\AnswerController;
 use App\Http\Controllers\QuestionsController;
 
 Route::get('/', function () {
@@ -42,6 +43,7 @@ Route::middleware('auth')->group(function () {
     Route ::get('/question/{token}', [SurveyController::class, 'showPublic'])->name('question');
 
     // Answer Routes
-    Route::post('/answers/store', [QuestionsController::class, 'store'])->name('answers.store');
+    Route::get('/answer/test', [AnswerController::class, 'index'])->name('answer.test');
+    Route::post('/answer/store', [AnswerController::class, 'store'])->name('answer.store');
 
 require __DIR__.'/auth.php';
