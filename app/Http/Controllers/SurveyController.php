@@ -67,7 +67,7 @@ class SurveyController extends Controller
             abort(403, 'Ce sondage nest pas actif.');
         }
 
-        return view('survey.public', compact('survey'));
+        return view('pages.question', compact('survey'));
     }
 
 }

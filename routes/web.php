@@ -37,12 +37,11 @@ Route::middleware('auth')->group(function () {
     Route::post('/survey/store', [SurveyController::class, 'store'])->name('survey.store');
     Route::patch('/survey/update/{survey}', [SurveyController::class, 'update'])->name('survey.update');
     Route::delete('/survey/delete/{survey}', [SurveyController::class, 'destroy'])->name('survey.destroy');
-    Route ::get('/survey/{token}', [SurveyController::class, 'showPublic'])->name('survey.public');
 
-// Question Routes
-Route::get('/question/{survey?}', [QuestionsController::class, 'index'])->name('question');
+    // Question Routes
+    Route ::get('/question/{token}', [SurveyController::class, 'showPublic'])->name('question');
 
-// Answer Routes
-Route::post('/answers/store', [QuestionsController::class, 'store'])->name('answers.store');
+    // Answer Routes
+    Route::post('/answers/store', [QuestionsController::class, 'store'])->name('answers.store');
 
 require __DIR__.'/auth.php';
