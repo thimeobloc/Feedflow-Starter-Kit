@@ -1,6 +1,6 @@
 <?php
 namespace App\Actions\Survey;
-
+use Illuminate\Support\Str;
 use App\DTOs\SurveyDTO;
 use App\Models\Survey;
 use Illuminate\Support\Facades\DB;
@@ -26,6 +26,7 @@ final class StoreSurveyAction
                 'start_date' => $dto->startDate,
                 'end_date' => $dto->endDate,
                 'is_anonymous' => $dto->anonymat,
+                'token' => Str::random(32)
             ]);
         });
     }

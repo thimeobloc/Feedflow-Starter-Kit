@@ -75,6 +75,10 @@
                         @method('DELETE')
                         <button>Supprimer</button>
                     </form>
+                    <a href="{{ route('survey.public', $survey->token) }}" target="_blank" class="text-blue-600 underline">
+                        Lien vers le formulaire
+                    </a>
+
                 </div>
             @endforeach
         @endif
