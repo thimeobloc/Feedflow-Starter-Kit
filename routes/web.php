@@ -38,6 +38,7 @@ Route::middleware('auth')->group(function () {
 
     // Question Routes
     Route ::get('/question/{token}', [SurveyController::class, 'showPublic'])->name('question');
+    Route ::post('/question/{survey}', [QuestionsController::class, 'store'])->name('question.store');
 
     // Answer Routes
     Route::post('/answers/store', [QuestionsController::class, 'store'])->name('answers.store');

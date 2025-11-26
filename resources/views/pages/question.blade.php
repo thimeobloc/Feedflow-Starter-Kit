@@ -31,7 +31,7 @@
             </div>
         </div>
 
-        <form method="POST" action="{{ route('question', $survey->id) }}">
+        <form method="POST" action="{{ route('question.store', $survey) }}">
             @csrf
 
             <label>Question :</label>
@@ -49,10 +49,31 @@
                 <label>Options :</label>
                 <input type="text" name="options[]" placeholder="Option 1">
                 <input type="text" name="options[]" placeholder="Option 2">
+
                 <button type="button" onclick="addOption()">Ajouter option</button>
             </div>
+
             <button type="submit">Ajouter la question</button>
         </form>
+
+        <div class="max-w-6xl mx-auto py-8">
+            <h1 class="text-3xl font-bold mb-6">Liste des sondages</h1>
+            @if($questions->isEmpty())
+                <p class="text-gray-600">Aucune question trouvée.</p>
+            @else
+                @foreach ($questions as $question)
+                        <div class="border rounded p-4 mb-4 bg-white shadow">
+                            <h2 class="text-xl font-bold">{{ $question->title }}</h2>
+                        </div>
+                @endforeach
+            @endif
+        </div>
+
+    <div>
+
+
+    </div>
+
     </body>
     </html>
 </x-app-layout>
