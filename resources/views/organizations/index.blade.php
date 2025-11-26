@@ -38,12 +38,15 @@
                             @foreach($organizations as $org)
                                 <tr>
                                     <td class="px-4 py-2 border-b">{{ $org->name }}</td>
-                                    <td class="px-4 py-2 border-b">{{ $org->pivot->role ?? 'N/A' }}</td>
+                                    <td class="px-4 py-2 border-b">{{ $org->pivot->role ?? 'Non choisi' }}</td>
                                     <td class="px-4 py-2 border-b">{{ $org->created_at->format('d/m/Y H:i') }}</td>
                                     <td class="px-4 py-2 border-b">{{ $org->updated_at->format('d/m/Y H:i') }}</td>
                                     <td class="px-4 py-2 border-b">
                                         @if($org->pivot->role === 'admin')
-                                            <form action="{{ route('organizations.destroy', $org->id) }}" method="POST" onsubmit="return confirm('Supprimer cette organisation ?');">
+                                            <a href="{{ route('organizations.updateForm', $org->id) }}" class="px-3 py-1 bg-yellow-600 text-white rounded hover:bg-yellow-700">
+                                                Modifier
+                                            </a>
+                                            <form action="{{ route('organizations.destroy', $org->id) }}" method="POST" class="inline-block" onsubmit="return confirm('Supprimer cette organisation ?');">
                                                 @csrf
                                                 @method('DELETE')
                                                 <button type="submit" class="px-3 py-1 bg-red-600 text-white rounded hover:bg-red-700">

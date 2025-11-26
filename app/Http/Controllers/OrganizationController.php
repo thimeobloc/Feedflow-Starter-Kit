@@ -10,11 +10,9 @@ use App\Actions\Organization\DeleteOrganizationAction;
 use App\Http\Requests\Organization\StoreOrganization;
 use App\Http\Requests\Organization\UpdateOrganization;
 use App\Http\Requests\Organization\DeleteOrganization;
-use Illuminate\Http\JsonResponse;
 
 class OrganizationController extends Controller
 {
-    // List all organizations the user belongs to
     public function index()
     {
         $user = auth()->user();
@@ -22,42 +20,38 @@ class OrganizationController extends Controller
         return view('organizations.index', compact('organizations'));
     }
 
-    // Show the create organization page (Blade)
     public function create()
     {
         return view('organizations.create');
     }
 
-    // Show a single organization (JSON/API)
-    public function show(Organization $organization): JsonResponse
+    public function updateForm(Organization $organization)
     {
-        $this->authorize('view', $organization);
-        return response()->json($organization, 200);
+        $this->authorize('update', $organization);
+        $users = \App\Models\User::all();
+        return view('organizations.update', compact('organization', 'users'));
     }
 
-    // Create a new organization (JSON/API)
     public function store(StoreOrganization $request, StoreOrganizationAction $action)
     {
         $dto = OrganizationDTO::fromRequest($request);
         $this->authorize('create', Organization::class);
-
         $organization = $action->handle($dto);
-
-        if ($request->wantsJson()) {
-            return response()->json($organization, 201);
-        }
-
-        return redirect()->route('organizations.index')
-                         ->with('success', 'Organisation créée avec succès !');
+        return redirect()->route('organizations.index')->with('success', 'Organisation créée avec succès !');
     }
 
-    // Delete an organization
+    public function update(UpdateOrganization $request, Organization $organization, UpdateOrganizationAction $action)
+    {
+        $dto = OrganizationDTO::fromRequest($request);
+        $this->authorize('update', $organization);
+        $action->handle($dto);
+        return redirect()->route('organizations.index')->with('success', 'Organisation mise à jour avec succès !');
+    }
+
     public function destroy(DeleteOrganization $request, Organization $organization, DeleteOrganizationAction $action)
     {
         $this->authorize('delete', $organization);
         $action->handle($organization);
-
-        return redirect()->route('organizations.index')
-                         ->with('success', 'Organisation supprimée avec succès !');
+        return redirect()->route('organizations.index')->with('success', 'Organisation supprimée avec succès !');
     }
 }
