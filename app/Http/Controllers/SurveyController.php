@@ -15,6 +15,7 @@ use App\Models\Survey;
 
 class SurveyController extends Controller
 {
+<<<<<<< HEAD
     /**
      * Affiche le formulaire d'un sondage et la liste des sondages
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
@@ -24,9 +25,19 @@ class SurveyController extends Controller
         return view('pages.survey', [
             "surveys"   => Survey::orderBy('created_at', 'desc')->get(),
             "survey"    => $survey
+=======
+    public function index()
+    {
+        $surveys = Survey::orderBy('created_at', 'desc')->get();
+
+        return view('pages.survey', [
+            "surveys" => $surveys
+>>>>>>> 82495b513c26eb0bb5072cbf1dfba5ad22ebb5f5
         ]);
+
     }
 
+<<<<<<< HEAD
     /**
      * Enregistrer un sondage
      * @param StoreSurveyRequest $request
@@ -34,6 +45,9 @@ class SurveyController extends Controller
      * @return \Illuminate\Http\RedirectResponse
      */
     public function store(StoreSurveyRequest $request, StoreSurveyAction $action)
+=======
+    public function add(StoreSurveyRequest $request, StoreSurveyAction $action)
+>>>>>>> 82495b513c26eb0bb5072cbf1dfba5ad22ebb5f5
     {
         $dto = SurveyDTO::fromRequest($request);
         $action->execute($dto);
@@ -41,6 +55,7 @@ class SurveyController extends Controller
         return redirect()->route('survey');
     }
 
+<<<<<<< HEAD
     public function destroy(Survey $survey)
     {
         $survey->delete();
@@ -54,5 +69,7 @@ class SurveyController extends Controller
     }
 
 
+=======
+>>>>>>> 82495b513c26eb0bb5072cbf1dfba5ad22ebb5f5
 
 }

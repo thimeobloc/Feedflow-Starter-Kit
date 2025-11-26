@@ -16,13 +16,11 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-    // Survey Routes
-    Route::get('/survey/{survey?}', [SurveyController::class, 'index'])->name('survey');
+// Survey Routes
+Route::get('/survey/{survey?}', [SurveyController::class, 'index'])->name('survey');
 
-    Route::post('/survey/store', [SurveyController::class, 'store'])->name('survey.store');
-    Route::put('/survey/update/{survey}', [SurveyController::class, 'update'])->name('survey.update');
-    Route::delete('/survey/delete/{survey}', [SurveyController::class, 'destroy'])->name('survey.destroy');
-
-
+Route::post('/survey/store', [SurveyController::class, 'store'])->name('survey.store');
+Route::put('/survey/update/{survey}', [SurveyController::class, 'update'])->name('survey.update');
+Route::delete('/survey/delete/{survey}', [SurveyController::class, 'destroy'])->name('survey.destroy');
 
 require __DIR__.'/auth.php';

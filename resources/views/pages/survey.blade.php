@@ -3,6 +3,7 @@
     <html lang="fr">
     <head>
         <meta charset="UTF-8">
+<<<<<<< HEAD
         <title>Sondage</title>
         <meta name="csrf-token" content="{{ csrf_token() }}">
     </head>
@@ -14,26 +15,51 @@
     </div>
 
     <form id="surveyForm" method="POST" action="{{ $survey ? route('survey.update', $survey) : route('survey.store') }}">
+=======
+        <title>Test création de sondage</title>
+        <meta name="csrf-token" content="{{ csrf_token() }}">
+    </head>
+    <body>
+    <h1>Tester la création d'un sondage</h1>
+
+    <form id="surveyForm" method="POST" action="{{ route('survey.add') }}">
+>>>>>>> 82495b513c26eb0bb5072cbf1dfba5ad22ebb5f5
         @csrf
 
         <div>
             <label for="title">Titre :</label>
+<<<<<<< HEAD
             <input type="text" name="title" id="title" value="{{ $survey->title ?? null }}" required>
+=======
+            <input type="text" name="title" id="title" required>
+>>>>>>> 82495b513c26eb0bb5072cbf1dfba5ad22ebb5f5
         </div>
 
         <div>
             <label for="description">Description :</label>
+<<<<<<< HEAD
             <input name="description" id="description" value="{{ $survey->description ?? null }}" required></input>
+=======
+            <textarea name="description" id="description" required></textarea>
+>>>>>>> 82495b513c26eb0bb5072cbf1dfba5ad22ebb5f5
         </div>
 
         <div>
             <label for="start_date">Date de début :</label>
+<<<<<<< HEAD
             <input type="date" name="start_date" id="start_date" value="{{ $survey ? \Carbon\Carbon::parse($survey->start_date)->format('Y-m-d') : ''}}" required>
+=======
+            <input type="date" name="start_date" id="start_date" required>
+>>>>>>> 82495b513c26eb0bb5072cbf1dfba5ad22ebb5f5
         </div>
 
         <div>
             <label for="end_date">Date de fin :</label>
+<<<<<<< HEAD
             <input type="date" name="end_date" id="end_date" value="{{ $survey ? \Carbon\Carbon::parse($survey->end_date)->format('Y-m-d') : ''}}" required>
+=======
+            <input type="date" name="end_date" id="end_date" required>
+>>>>>>> 82495b513c26eb0bb5072cbf1dfba5ad22ebb5f5
         </div>
 
         <div>
@@ -44,7 +70,11 @@
             </select>
         </div>
 
+<<<<<<< HEAD
         <button type="submit">{{ $survey ? 'Modifier' : 'Créer' }} le sondage</button>
+=======
+        <button type="submit">Créer le sondage</button>
+>>>>>>> 82495b513c26eb0bb5072cbf1dfba5ad22ebb5f5
     </form>
     <div id="response" style="margin-top:20px;"></div>
 
@@ -66,12 +96,15 @@
                         <br>
                         Anonyme : {{ $survey->anonymous }}
                     </div>
+<<<<<<< HEAD
                     <a href="{{ route('survey', $survey) }}">Modifier</a>
                     <form action="{{ route('survey.destroy', $survey) }}" method="POST">
                         @csrf
                         @method('DELETE')
                         <button>Supprimer</button>
                     </form>
+=======
+>>>>>>> 82495b513c26eb0bb5072cbf1dfba5ad22ebb5f5
                 </div>
             @endforeach
         @endif
