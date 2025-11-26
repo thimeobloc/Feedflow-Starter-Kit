@@ -1,21 +1,16 @@
 <?php
 namespace App\Actions\Organization;
 
-use App\DTOs\OrganizationDTO;
+use App\Models\Organization;
 use Illuminate\Support\Facades\DB;
 
 final class DeleteOrganizationAction
 {
-    public function __construct() {}
-
-    /**
-     * Delete an organization
-     * @param OrganizationDTO $dto
-     * @return array
-     */
-    public function handle(OrganizationDTO $dto): array
+    public function handle(Organization $organization)
     {
-        return DB::transaction(function () use ($dto) {
+        DB::transaction(function() use ($organization) {
+            $organization->members()->detach();
+            $organization->delete();
         });
     }
 }

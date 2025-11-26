@@ -47,4 +47,18 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    // Organizations this user belongs to
+    public function organizations()
+    {
+        return $this->belongsToMany(Organization::class, 'organization_user')
+                    ->withPivot('role')
+                    ->withTimestamps();
+    }
+
+    // Organizations owned by this user
+    public function ownedOrganizations()
+    {
+        return $this->hasMany(Organization::class, 'user_id');
+    }
 }
