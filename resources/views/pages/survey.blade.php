@@ -14,13 +14,11 @@
     </div>
 
     <form id="surveyForm" method="POST" action="{{ $survey ? route('survey.update', $survey) : route('survey.store') }}">
-        <title>Test création de sondage</title>
-        <meta name="csrf-token" content="{{ csrf_token() }}">
-
-    <h1>Tester la création d'un sondage</h1>
-
-    <form id="surveyForm" method="POST" action="{{ route('survey.store') }}">
         @csrf
+        @if($survey)
+            @method('PATCH')
+        @endif
+{{--        <meta name="csrf-token" content="{{ csrf_token() }}">--}}
 
         <div>
             <label for="title">Titre :</label>
@@ -29,7 +27,7 @@
 
         <div>
             <label for="description">Description :</label>
-            <input name="description" id="description" value="{{ $survey->description ?? null }}" required></input>
+            <input name="description" id="description" value="{{ $survey->description ?? null }}" required>
         </div>
 
         <div>
@@ -81,7 +79,6 @@
                 </div>
             @endforeach
         @endif
-
     </div>
     </form>
     </body>

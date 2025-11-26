@@ -6,9 +6,9 @@ use App\Actions\Survey\CloseSurveyAction;
 use App\Actions\Survey\StoreSurveyAction;
 use App\Actions\Survey\UpdateSurveyAction;
 use App\DTOs\SurveyDTO;
-use App\Http\Requests\Survey\DeleteSurveyRequest;
 use App\Http\Requests\Survey\StoreSurveyRequest;
 use App\Http\Requests\Survey\UpdateSurveyRequest;
+use App\Http\Requests\Survey\DeleteSurveyRequest;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use App\Models\Survey;
@@ -47,9 +47,11 @@ class SurveyController extends Controller
         return redirect()->route('survey');
     }
 
-    public function update(Survey $survey, StoreSurveyRequest $request)
+    public function update(UpdateSurveyRequest $request, UpdateSurveyAction $action, Survey $survey)
     {
-        $survey->update($request->only('title', 'description', 'start_date', 'end_date', 'anonymous'));
+        $dto = SurveyDTO::fromUpdateRequest($request);
+        $action->execute($survey, $dto);
+
         return redirect()->route('survey');
     }
 

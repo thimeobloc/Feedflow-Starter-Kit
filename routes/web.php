@@ -20,7 +20,7 @@ Route::middleware('auth')->group(function () {
 Route::get('/survey/{survey?}', [SurveyController::class, 'index'])->name('survey');
 
 Route::post('/survey/store', [SurveyController::class, 'store'])->name('survey.store');
-Route::put('/survey/update/{survey}', [SurveyController::class, 'update'])->name('survey.update');
+Route::patch('/survey/update/{survey}', [SurveyController::class, 'update'])->name('survey.update');
 Route::delete('/survey/delete/{survey}', [SurveyController::class, 'destroy'])->name('survey.destroy');
 
 require __DIR__.'/auth.php';

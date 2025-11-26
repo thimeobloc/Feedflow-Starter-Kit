@@ -11,7 +11,7 @@ class UpdateSurveyRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,24 @@ class UpdateSurveyRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'title' => 'required|string',
+            'description' => 'required|string',
+            'start_date' => 'required|date',
+            'end_date' => 'required|date',
+            'anonymous' => 'required|boolean',
+        ];
+    }
+
+    /**
+     * Message d'erreur personnalisé
+     */
+    public function messages(): array{
+        return [
+            'title.required' => 'Le titre est obligatoire.',
+            'description.required' => 'La description est obligatoire.',
+            'start_date.required' => 'La date de debut est obligatoire.',
+            'end_date.required' => 'La date de fin est obligatoire.',
+            'anonymous.required' => 'Le champ anonymat est obligatoire.',
         ];
     }
 }
