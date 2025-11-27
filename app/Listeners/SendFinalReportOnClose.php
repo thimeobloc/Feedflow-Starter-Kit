@@ -21,9 +21,11 @@ class SendFinalReportOnClose implements ShouldQueue
     /**
      * Handle the event.
      */
+
+    //Function to send email to testfeedflow@gmail.com
     public function handle(SurveyClosed $event): void
     {
-        Mail::to('test@feedflow.local')->send(
+        Mail::to('testfeedflow@gmail.com')->send(
             new SurveyClosedMail($event->survey));
     }
 }

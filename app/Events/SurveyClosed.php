@@ -19,7 +19,7 @@ class SurveyClosed
      * Create a new event instance.
      */
 
-    Public Survey $survey;
+    public Survey $survey;
     public function __construct(Survey $survey)
     {
         $this->survey = $survey;
@@ -37,6 +37,8 @@ class SurveyClosed
         ];
     }
 
+
+    //Content of the email
     public function build()
     {
         return $this->subject('Fin de sondage')

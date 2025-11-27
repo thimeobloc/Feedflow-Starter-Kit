@@ -12,11 +12,13 @@
 
 
     <form id="surveyForm" method="POST"
+
           action="{{ $survey ? route('survey.update', $survey) : route('survey.store', $organizationId) }}">
         @csrf
         @if($survey)
             @method('PATCH')
         @endif
+
 
         <div>
             <label for="title">Titre :</label>
@@ -48,6 +50,8 @@
             </select>
         </div>
 
+
+
         <button type="submit">{{ $survey ? 'Modifier' : 'Créer' }} le sondage</button>
     </form>
     <div id="response" style="margin-top:20px;"></div>
@@ -59,7 +63,7 @@
         @else
             @foreach ($surveys as $survey)
 
-                <a href="{{ route('answer', ['token' => $survey->token]) }}">
+                <a href="{{ route('question', ['token' => $survey->token]) }}">
                     <div class="border rounded p-4 mb-4 bg-white shadow">
 
                         <h2 class="text-xl font-bold">{{ $survey->title }}</h2>
@@ -73,6 +77,10 @@
                             Anonyme : {{ $survey->is_anonymous }}
                         </div>
 
+                        @if(is_null($survey?->token))
+                            <p>Sondage Inactif</p>
+                        @endif
+                        
                         <a href="{{ route('question', $survey->token) }}">Ajouter des questions</a>
                         <br>
                         <a href="{{ route('survey', [ $organizationId,$survey->id]) }}">Modifier</a>

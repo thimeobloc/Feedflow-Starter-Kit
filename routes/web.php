@@ -32,7 +32,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/organization/destroy/{organization}', [OrganizationController::class, 'destroy'])->name('organizations.destroy');
 
 
-    // Sondages
+    // Surveys
     Route::prefix('survey')->group(function () {
         Route::get('/{organization?}/{survey?}', [SurveyController::class, 'index'])->name('survey');
 
@@ -43,7 +43,7 @@ Route::middleware('auth')->group(function () {
 });
 
 // Sondage public accessible sans login
-Route::get('/question/{token}', [SurveyController::class, 'showPublic'])->name('question');
+Route::get('/question/{token?}', [SurveyController::class, 'showPublic'])->name('question');
 Route::patch('/survey/{survey}/question/{question}', [QuestionsController::class, 'update'])->name('question.update');
 Route::post('/question/{survey}', [QuestionsController::class, 'store'])->name('question.store');
 
