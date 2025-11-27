@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Actions\Survey\StoreSurveyQuestionAction;
+use App\Actions\Survey\UpdateSurveyQuestionAction;
 use App\DTOs\SurveyQuestionDTO;
 use App\Http\Requests\Survey\StoreSurveyQuestionRequest;
 use App\Models\Survey;
@@ -31,14 +32,13 @@ class QuestionsController extends Controller
             ]);
     }
 
-    public function update(StoreSurveyQuestionRequest $request, StoreSurveyQuestionAction $action, Survey $survey)
+    public function update(StoreSurveyQuestionRequest $request, UpdateSurveyQuestionAction $action, Survey $survey, SurveyQuestion $question)
     {
         $dto = SurveyQuestionDTO::fromRequest($request);
-        $action->execute($dto, $survey);
+        $action->execute($dto, $survey, $question);
         $token = $survey->token;
 
         return redirect()->route('question', [
-            "survey" => $survey,
             "token" => $token,
         ]);
     }
