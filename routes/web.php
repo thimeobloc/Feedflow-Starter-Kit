@@ -36,10 +36,10 @@ Route::middleware('auth')->group(function () {
     });
 });
 
-// Sondage public accessible sans login
-Route::get('/question/{token}', [SurveyController::class, 'showPublic'])->name('question');
-Route::patch('/survey/{survey}/question/{question}', [QuestionsController::class, 'update'])->name('question.update');
-Route ::post('/question/{survey}', [QuestionsController::class, 'store'])->name('question.store');
+        // Sondage public accessible sans login
+        Route::get('/question/{token}', [SurveyController::class, 'showPublic'])->name('question');
+        Route::patch('/survey/{survey}/question/{question}', [QuestionsController::class, 'update'])->name('question.update');
+        Route ::post('/question/{survey}', [QuestionsController::class, 'store'])->name('question.store');
 
 Route::post('/answers/store', [QuestionsController::class, 'store'])->name('answers.store');
 
