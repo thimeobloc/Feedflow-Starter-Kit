@@ -32,7 +32,7 @@ Route::middleware('auth')->group(function () {
 
     // Surveys
     Route::prefix('survey')->group(function () {
-        Route::get('/{organization}', [SurveyController::class, 'index'])->name('survey');
+        Route::get('/{organization?}', [SurveyController::class, 'index'])->name('survey');
         Route::post('/store/{organization}', [SurveyController::class, 'store'])->name('survey.store');
         Route::patch('/update/{survey}', [SurveyController::class, 'update'])->name('survey.update');
         Route::delete('/delete/{survey}', [SurveyController::class, 'destroy'])->name('survey.destroy');
@@ -41,6 +41,8 @@ Route::middleware('auth')->group(function () {
 
 // Public survey
 Route::get('/question/{token}', [SurveyController::class, 'showPublic'])->name('question');
+Route::patch('/survey/{survey}/question/{question}', [QuestionsController::class, 'update'])->name('question.update');
+Route ::post('/question/{survey}', [QuestionsController::class, 'store'])->name('question.store');
 
 // Store survey answers
 Route::post('/answers/store', [QuestionsController::class, 'store'])->name('answers.store');
