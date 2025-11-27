@@ -7,7 +7,8 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Support\Facades\Mail;
 
-class SendFinalReportOnClose
+class SendFinalReportOnClose implements ShouldQueue
+
 {
     /**
      * Create the event listener.
@@ -23,6 +24,6 @@ class SendFinalReportOnClose
     public function handle(SurveyClosed $event): void
     {
         Mail::to('admin@example.com')->send(
-            new SurveyClosed($event->survey));
+            new SurveyClosedMail($event->survey));
     }
 }

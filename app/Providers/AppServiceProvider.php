@@ -9,6 +9,12 @@ class AppServiceProvider extends ServiceProvider
     /**
      * Register any application services.
      */
+
+    protected $listen = [
+        \App\Events\SurveyClosed::class => [
+            \App\Listeners\SendFinalReportOnClose::class,
+        ],
+    ];
     public function register(): void
     {
         //

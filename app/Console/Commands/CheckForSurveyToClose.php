@@ -3,7 +3,8 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
-
+use App\Models\Survey;
+use App\Events\SurveyClosed;
 class CheckForSurveyToClose extends Command
 {
     /**
@@ -25,6 +26,16 @@ class CheckForSurveyToClose extends Command
      */
     public function handle()
     {
-        //
+        $surveysToClose = Survey::where('end_date', '<=', now())
+            ->whereNotNull('token')
+            ->get();
+
+        foreach ($surveysToClose as $survey) {
+            event(new SurveyClosed($survey));
+
+        }
+
+        $this->info("Tous les sondages à fermer ont été traités.");
+
     }
 }

@@ -19,7 +19,7 @@ class SurveyClosed
      * Create a new event instance.
      */
 
-    public Survey $survey;
+    Public Survey $survey;
     public function __construct(Survey $survey)
     {
         $this->survey = $survey;
@@ -35,5 +35,12 @@ class SurveyClosed
         return [
             new PrivateChannel('channel-name'),
         ];
+    }
+
+    public function build()
+    {
+        return $this->subject('Fin de sondage')
+                    ->view('emailSurvey')
+                    ->with(['survey' => $this->survey]);
     }
 }

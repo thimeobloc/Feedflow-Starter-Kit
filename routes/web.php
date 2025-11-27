@@ -33,7 +33,7 @@ Route::middleware('auth')->group(function () {
 
 
     // Sondages
-        Route::prefix('survey')->group(function () {
+    Route::prefix('survey')->group(function () {
         Route::get('/{organization?}/{survey?}', [SurveyController::class, 'index'])->name('survey');
 
         Route::post('/store/{organization}', [SurveyController::class, 'store'])->name('survey.store');
@@ -42,11 +42,10 @@ Route::middleware('auth')->group(function () {
     });
 });
 
-
 // Sondage public accessible sans login
 Route::get('/question/{token}', [SurveyController::class, 'showPublic'])->name('question');
 Route::patch('/survey/{survey}/question/{question}', [QuestionsController::class, 'update'])->name('question.update');
-Route ::post('/question/{survey}', [QuestionsController::class, 'store'])->name('question.store');
+Route::post('/question/{survey}', [QuestionsController::class, 'store'])->name('question.store');
 
 
 // Store survey answers
@@ -57,4 +56,4 @@ Route::prefix('answer')->group(function () {
 
 
 // Auth routes
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
