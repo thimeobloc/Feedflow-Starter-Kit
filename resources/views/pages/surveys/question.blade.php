@@ -77,9 +77,8 @@
                             <h2 class="text-xl font-bold">Question : {{ $question->title }} (Réponse texte)</h2>
 
                             <input type="hidden" name="question_type" value="text">
-                            <input type="text" name="title" value="{{ $question->title }}">
 
-                            <button>Valider</button>
+                            <button style="margin-left:1300px">Valider</button>
                         </form>
                     @endif
 
@@ -92,17 +91,18 @@
                             <h2 class="text-xl font-bold">{{ $question->title }} (Choix unique)</h2>
 
                             <input type="hidden" name="question_type" value="unique">
+                            <input type="text" name="title" value="{{ $question->title }}" class="hidden">
 
-                            <input type="text" name="title" value="{{ $question->title }}">
-
-                            <label>Options :</label>
-
+                            <label>Options 1 :</label>
                             <input type="text" name="options[]" value="{{ $question->options[0] ?? '' }}" style="border:2px solid black; margin-left:5px;">
+                            <label>Options 2 :</label>
                             <input type="text" name="options[]" value="{{ $question->options[1] ?? '' }}" style="border:2px solid black; margin-left:5px;">
+                            <label>Options 3 :</label>
                             <input type="text" name="options[]" value="{{ $question->options[2] ?? '' }}" style="border:2px solid black; margin-left:5px;">
+                            <label>Options 4 :</label>
                             <input type="text" name="options[]" value="{{ $question->options[3] ?? '' }}" style="border:2px solid black; margin-left:5px;">
 
-                            <button>Valider</button>
+                            <button style="margin-left:1300px">Valider</button>
                         </form>
                     @endif
 
@@ -112,15 +112,11 @@
                             @csrf
                             @method("PATCH")
 
-                            <h2 class="text-xl font-bold">{{ $question->title }} (Échelle 1-10)</h2>
+                            <h2 class="text-xl font-bold">Question : {{ $question->title }} (Réponse échelle de 1 à 10)</h2>
 
                             <input type="hidden" name="question_type" value="scale">
-                            <input type="text" name="title" value="{{ $question->title }}">
 
-                            <label for="scaleId">Notez de 1 à 10 :</label>
-                            <input type="range" id="scaleId" name="options[]" min="1" max="10" step="1" value="5">
-
-                            <button>Valider</button>
+                            <button style="margin-left:1300px">Valider</button>
                         </form>
                     @endif
 
