@@ -92,6 +92,15 @@
         </script>
     </head>
 
+
+
+
+
+
+
+
+
+
     <body>
         <div class="container">
             <h1>{{ $survey->title }}</h1>
@@ -128,30 +137,97 @@
 
             <h2>Liste des questions</h2>
             @if($questions->isEmpty())
-                <p>Aucune question trouvée.</p>
+                <p class="text-gray-600">Aucune question trouvée.</p>
             @else
+
                 @foreach ($questions as $question)
-                    <div class="question-card">
-                        <form method="POST" action="{{ route('question.update', [$survey->id, $question->id]) }}">
-                            @csrf
-                            @method('PATCH')
+                    <div class="border rounded p-4 mb-4 bg-white shadow">
+                        @csrf
 
-                            <h2>{{ $question->title }} ({{ ucfirst($question->question_type) }})</h2>
+                        {{-- QUESTION TEXTE --}}
+                        @if($question->question_type === "text")
+                            <form method="POST" action="{{ route('question.update', [$survey->id, $question->id]) }}">
+                                @csrf
+                                @method("PATCH")
 
-                            <input type="hidden" name="question_type" value="{{ $question->question_type }}">
+                                <h2 class="text-xl font-bold">Question : {{ $question->title }} (Réponse texte)</h2>
 
-                            @if(in_array($question->question_type,['unique','multiple']))
-                                @foreach($question->options as $idx => $option)
-                                    <label>Option {{ $idx+1 }}:</label>
-                                    <input type="text" name="options[]" value="{{ $option }}" class="option-input">
-                                @endforeach
-                            <button>Valider</button>
-                            @endif
-                        </form>
+                                <input type="hidden" name="question_type" value="text">
+
+                                <button style="margin-left:1300px">Valider</button>
+                            </form>
+                        @endif
+
+                        {{-- QUESTION CHOIX UNIQUE --}}
+                        @if($question->question_type === "unique")
+                            <form method="POST" action="{{ route('question.update', [$survey->id, $question->id]) }}">
+                                @csrf
+                                @method("PATCH")
+
+                                <h2 class="text-xl font-bold">{{ $question->title }} (Choix unique)</h2>
+
+                                <input type="hidden" name="question_type" value="unique">
+                                <input type="text" name="title" value="{{ $question->title }}" class="hidden">
+
+                                <label>Options 1 :</label>
+                                <input type="text" name="options[]" value="{{ $question->options[0] ?? '' }}" style="border:2px solid black; margin-left:5px;">
+                                <label>Options 2 :</label>
+                                <input type="text" name="options[]" value="{{ $question->options[1] ?? '' }}" style="border:2px solid black; margin-left:5px;">
+                                <label>Options 3 :</label>
+                                <input type="text" name="options[]" value="{{ $question->options[2] ?? '' }}" style="border:2px solid black; margin-left:5px;">
+                                <label>Options 4 :</label>
+                                <input type="text" name="options[]" value="{{ $question->options[3] ?? '' }}" style="border:2px solid black; margin-left:5px;">
+
+                                <button style="margin-left:1300px">Valider</button>
+                            </form>
+                        @endif
+
+                        {{-- QUESTION CHOIX MULTIPLE --}}
+                        @if($question->question_type === "multiple")
+                            <form method="POST" action="{{ route('question.update', [$survey->id, $question->id]) }}">
+                                @csrf
+                                @method("PATCH")
+
+                                <h2 class="text-xl font-bold">{{ $question->title }} (Choix Multiple)</h2>
+
+                                <input type="hidden" name="question_type" value="multiple">
+                                <input type="text" name="title" value="{{ $question->title }}" class="hidden">
+
+                                <label>Options 1 :</label>
+                                <input type="text" name="options[]" value="{{ $question->options[0] ?? '' }}" style="border:2px solid black; margin-left:5px;">
+                                <label>Options 2 :</label>
+                                <input type="text" name="options[]" value="{{ $question->options[1] ?? '' }}" style="border:2px solid black; margin-left:5px;">
+                                <label>Options 3 :</label>
+                                <input type="text" name="options[]" value="{{ $question->options[2] ?? '' }}" style="border:2px solid black; margin-left:5px;">
+                                <label>Options 4 :</label>
+                                <input type="text" name="options[]" value="{{ $question->options[3] ?? '' }}" style="border:2px solid black; margin-left:5px;">
+
+
+                                <button style="margin-left:1300px">Valider</button>
+                            </form>
+                        @endif
+
+                        {{-- QUESTION ÉCHELLE --}}
+                        @if($question->question_type === "scale")
+                            <form method="POST" action="{{ route('question.update', [$survey->id, $question->id]) }}">
+                                @csrf
+                                @method("PATCH")
+
+                                <h2 class="text-xl font-bold">Question : {{ $question->title }} (Réponse échelle de 1 à 10)</h2>
+
+                                <input type="hidden" name="question_type" value="scale">
+
+                                <button style="margin-left:1300px">Valider</button>
+                            </form>
+                        @endif
+
                     </div>
                 @endforeach
+
             @endif
         </div>
+
     </body>
     </html>
 </x-app-layout>
+
