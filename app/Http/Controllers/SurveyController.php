@@ -8,66 +8,88 @@ use App\Actions\Survey\UpdateSurveyAction;
 use App\DTOs\SurveyDTO;
 use App\Http\Requests\Survey\StoreSurveyRequest;
 use App\Http\Requests\Survey\UpdateSurveyRequest;
-use App\Http\Requests\Survey\DeleteSurveyRequest;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use App\Models\Survey;
 use Illuminate\Support\Carbon;
-use Illuminate\Support\Str;
 
 class SurveyController extends Controller
 {
     /**
      * Affiche le formulaire d'un sondage et la liste des sondages
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
-    public function index(Survey $survey = null)
+    public function index(Survey $survey = null, $organizationId = null)
     {
-        return view('pages.survey', [
-            "surveys" => Survey::orderBy('created_at', 'desc')->get(),
+        $user = auth()->user();
+
+        // Récupérer toutes les organisations de l'utilisateur
+        $organizations = $user->organizations()->withPivot('role')->get();
+
+        // Si un ID d'organisation est passé dans l'URL, récupérer cette organisation
+        $organization = $organizationId ? $organizations->firstWhere('id', $organizationId) : null;
+
+        // Récupérer les sondages, éventuellement filtrés par organisation
+        $surveys = Survey::when($organizationId, function ($query, $orgId) {
+            $query->where('organization_id', $orgId);
+        })->orderBy('created_at', 'desc')->get();
+
+        return view('pages.surveys.survey', [
+            "organization" => $organization, // organisation unique ou null
+            "organizationId" => $organizationId,
+            "surveys" => $surveys,
             "survey" => $survey,
         ]);
     }
 
     /**
      * Enregistrer un sondage
-     * @param StoreSurveyRequest $request
-     * @param StoreSurveyAction $action
-     * @return \Illuminate\Http\RedirectResponse
      */
-    public function store(StoreSurveyRequest $request, StoreSurveyAction $action)
+    public function store(StoreSurveyRequest $request, StoreSurveyAction $action, $organizationId)
     {
         $dto = SurveyDTO::fromRequest($request);
-        $action->execute($dto);
 
-        return redirect()->route('survey');
+        // Exécuter l'action avec l'ID de l'organisation
+        $action->execute($dto, (int) $organizationId);
+
+        // Redirection vers la page des sondages de cette organisation
+        return redirect()->route('survey', $organizationId);
     }
 
+    /**
+     * Supprimer un sondage
+     */
     public function destroy(Survey $survey)
     {
         $survey->delete();
-        return redirect()->route('survey');
+
+        // Redirection vers la page de la même organisation
+        return redirect()->route('survey', $survey->organization_id);
     }
 
+    /**
+     * Mettre à jour un sondage
+     */
     public function update(UpdateSurveyRequest $request, UpdateSurveyAction $action, Survey $survey)
     {
         $dto = SurveyDTO::fromUpdateRequest($request);
+
         $action->execute($survey, $dto);
 
-        return redirect()->route('survey');
+        return redirect()->route('survey', $survey->organization_id);
     }
 
+    /**
+     * Affiche le sondage public via son token
+     */
     public function showPublic($token)
     {
         $survey = Survey::where('token', $token)->firstOrFail();
+        $questions = $survey->questions()->orderBy('created_at', 'desc')->get();
 
         $now = Carbon::now();
 
         if ($now->lt($survey->start_date) || $now->gt($survey->end_date)) {
-            abort(403, 'Ce sondage nest pas actif.');
+            abort(403, 'Ce sondage n\'est pas actif.');
         }
 
-        return view('pages.question', compact('survey'));
+        return view('pages.surveys.question', compact('survey','questions', 'token'));
     }
-
 }

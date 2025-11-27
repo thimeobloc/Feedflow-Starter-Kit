@@ -10,54 +10,77 @@ use App\Actions\Organization\DeleteOrganizationAction;
 use App\Http\Requests\Organization\StoreOrganization;
 use App\Http\Requests\Organization\UpdateOrganization;
 use App\Http\Requests\Organization\DeleteOrganization;
-use Illuminate\Http\JsonResponse;
 
 class OrganizationController extends Controller
 {
-    // List all organizations the user belongs to
+    /**
+     * Affiche la liste des organisations de l'utilisateur
+     */
     public function index()
     {
         $user = auth()->user();
         $organizations = $user->organizations()->withPivot('role')->get();
-        return view('organizations.index', compact('organizations'));
+
+        return view('pages.organizations.index', compact('organizations'));
     }
 
-    // Show the create organization page (Blade)
+    /**
+     * Affiche le formulaire de création d'une organisation
+     */
     public function create()
     {
-        return view('organizations.create');
+        return view('pages.organizations.create');
     }
 
-    // Show a single organization (JSON/API)
-    public function show(Organization $organization): JsonResponse
+    /**
+     * Affiche le formulaire de mise à jour d'une organisation
+     */
+    public function updateForm(Organization $organization)
     {
-        $this->authorize('view', $organization);
-        return response()->json($organization, 200);
+        $this->authorize('update', $organization);
+        $users = \App\Models\User::all();
+        $organization->load('members'); // Important pour récupérer les rôles
+        $userRoles = [];
+        foreach ($users as $user) {
+            $member = $organization->members->firstWhere('id', $user->id);
+            $userRoles[$user->id] = $member ? $member->pivot->role : null;
+        }
+
+        return view('pages.organizations.update', compact('organization', 'users', 'userRoles'));
     }
 
-    // Create a new organization (JSON/API)
+    /**
+     * Enregistre une nouvelle organisation
+     */
     public function store(StoreOrganization $request, StoreOrganizationAction $action)
     {
         $dto = OrganizationDTO::fromRequest($request);
         $this->authorize('create', Organization::class);
-
         $organization = $action->handle($dto);
 
-        if ($request->wantsJson()) {
-            return response()->json($organization, 201);
-        }
-
-        return redirect()->route('organizations.index')
-                         ->with('success', 'Organisation créée avec succès !');
+        return redirect()->route('organizations.index')->with('success', 'Organisation créée avec succès !');
     }
 
-    // Delete an organization
+    /**
+     * Met à jour une organisation existante
+     */
+    public function update(UpdateOrganization $request, Organization $organization, UpdateOrganizationAction $action)
+    {
+        $this->authorize('update', $organization);
+        $dto = OrganizationDTO::fromRequest($request);
+        $action->handle($dto, $organization);
+
+        return redirect()->route('organizations.index')->with('success', 'Organisation mise à jour avec succès !');
+    }
+
+    /**
+     * Supprime une organisation
+     */
     public function destroy(DeleteOrganization $request, Organization $organization, DeleteOrganizationAction $action)
     {
         $this->authorize('delete', $organization);
         $action->handle($organization);
 
-        return redirect()->route('organizations.index')
-                         ->with('success', 'Organisation supprimée avec succès !');
+        return redirect()->route('organizations.index')->with('success', 'Organisation supprimée avec succès !');
     }
 }

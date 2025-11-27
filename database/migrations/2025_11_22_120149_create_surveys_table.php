@@ -25,7 +25,11 @@ return new class extends Migration
             $table->string('token');
             $table->timestamps();
 
-            $table->foreign('organization_id')->references('id')->on('organizations');
+            $table->foreign('organization_id')
+            ->references('id')
+            ->on('organizations')
+            ->onDelete('cascade');
+
             $table->foreign('user_id')->references('id')->on('users');
         });
     }

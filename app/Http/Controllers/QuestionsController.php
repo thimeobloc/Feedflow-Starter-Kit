@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Actions\Survey\StoreSurveyQuestionAction;
+use App\Actions\Survey\UpdateSurveyQuestionAction;
+use App\DTOs\SurveyQuestionDTO;
+use App\Http\Requests\Survey\StoreSurveyQuestionRequest;
 use App\Models\Survey;
-
 use App\Models\SurveyQuestion;
 use Illuminate\Http\Request;
 
@@ -11,32 +14,32 @@ class QuestionsController extends Controller
 {
     public function index(Survey $survey)
     {
-        return view('pages.question', [
-            "survey"    => $survey,
+        return view('pages.surveys.question', [
+            "questions" => $survey->questions()->orderBy('created_at', 'desc')->get(),
+            "survey" => $survey,
         ]);
     }
 
-    public function store(Request $request, Survey $survey)
+    public function store(StoreSurveyQuestionRequest $request, StoreSurveyQuestionAction $action, Survey $survey)
     {
-        $options = null;
+        $dto = SurveyQuestionDTO::fromRequest($request);
+        $action->execute($dto, $survey);
+        $token = $survey->token;
 
-        if ($request->type === 'radio' || $request->type === 'checkbox') {
-            $options = array_filter($request->options);
-        }
+        return redirect()->route('question', [
+            "survey" => $survey,
+            "token" => $token,
+            ]);
+    }
 
-        if ($request->type === 'scale') {
-            $options = [
-                'min' => 1,
-                'max' => 10
-            ];
-        }
+    public function update(StoreSurveyQuestionRequest $request, UpdateSurveyQuestionAction $action, Survey $survey, SurveyQuestion $question)
+    {
+        $dto = SurveyQuestionDTO::fromRequest($request);
+        $action->execute($dto, $survey, $question);
+        $token = $survey->token;
 
-        $survey->questions()->create([
-            'title'         => $request->title,
-            'question_type' => $request->type,
-            'options'       => $options,
+        return redirect()->route('question', [
+            "token" => $token,
         ]);
-
-        return back()->with('Succes', 'Question added successfully!');
     }
 }
