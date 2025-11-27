@@ -50,6 +50,7 @@
                                             <!-- Edit organization -->
                                             <a href="{{ route('organizations.updateForm', $org->id) }}" class="px-3 py-1 bg-yellow-600 text-black rounded hover:bg-yellow-700">
                                                 Modifier
+
                                             </a>
 
                                             <!-- Delete organization -->
