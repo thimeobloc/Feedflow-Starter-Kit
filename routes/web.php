@@ -28,8 +28,8 @@ Route::middleware('auth')->group(function () {
     Route::delete('/organization/destroy/{organization}', [OrganizationController::class, 'destroy'])->name('organizations.destroy');
 
     // Sondages
-    Route::prefix('survey')->group(function () {
-        Route::get('/{organization?}', [SurveyController::class, 'index'])->name('survey');
+        Route::prefix('survey')->group(function () {
+        Route::get('/{organization?}/{survey?}', [SurveyController::class, 'index'])->name('survey');
         Route::post('/store/{organization}', [SurveyController::class, 'store'])->name('survey.store');
         Route::patch('/update/{survey}', [SurveyController::class, 'update'])->name('survey.update');
         Route::delete('/delete/{survey}', [SurveyController::class, 'destroy'])->name('survey.destroy');

@@ -9,9 +9,7 @@
     <body>
     <h1>{{ $survey ? "Modifier" : "Créer un nouveau" }} Sondage</h1>
 
-    <div class="refresh">
-        <a href="{{ route('survey', $organization->id) }}">Refresh</a>
-    </div>
+
 
     <form id="surveyForm" method="POST"
           action="{{ $survey ? route('survey.update', $survey) : route('survey.store', $organizationId) }}">
@@ -60,8 +58,9 @@
             <p class="text-gray-600">Aucun sondage trouvé.</p>
         @else
             @foreach ($surveys as $survey)
+                <div class="border rounded p-4 mb-4 bg-white shadow">
                 <a href="{{ route('question', $survey->token) }}" target="_blank" class="text-blue-600 underline">
-                    <div class="border rounded p-4 mb-4 bg-white shadow">
+
                         <h2 class="text-xl font-bold">{{ $survey->title }}</h2>
                         <p>{{ $survey->description }}</p>
 
@@ -72,14 +71,19 @@
                             <br>
                             Anonyme : {{ $survey->is_anonymous }}
                         </div>
-                        <a href="{{ route('survey', $survey) }}">Modifier</a>
+
+                </a>
+                    <a href="{{ route('survey', [ $organizationId,$survey->id]) }}">
+                        Modifier
+                    </a>
                         <form action="{{ route('survey.destroy', $survey) }}" method="POST">
                             @csrf
                             @method('DELETE')
                             <button>Supprimer</button>
                         </form>
-                    </div>
-                </a>
+                </div>
+
+
             @endforeach
         @endif
     </div>
