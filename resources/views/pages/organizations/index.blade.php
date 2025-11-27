@@ -46,9 +46,10 @@
                                     <td class="px-4 py-2 border-b">{{ $org->updated_at->format('d/m/Y H:i') }}</td>
                                     <td class="px-4 py-2 border-b">
                                         @if($org->pivot->role === 'admin')
+
                                             <!-- Edit organization -->
-                                            <a href="{{ route('organizations.updateForm', $org->id) }}" class="px-3 py-1 bg-yellow-600 text-white rounded hover:bg-yellow-700">
-                                                Edit
+                                            <a href="{{ route('organizations.updateForm', $org->id) }}" class="px-3 py-1 bg-yellow-600 text-black rounded hover:bg-yellow-700">
+                                                Modifier
                                             </a>
 
                                             <!-- Delete organization -->
@@ -61,8 +62,9 @@
                                             </form>
 
                                             <!-- Link to surveys -->
-                                            <a href="{{ route('survey', $org->id) }}" class="px-3 py-1 bg-yellow-600 text-white rounded hover:bg-yellow-700">
-                                                Surveys
+                                            <a href="{{ route('survey', $org->id) }}" class="px-3 py-1 bg-yellow-600 text-black rounded hover:bg-yellow-700">
+                                                Sondages
+
                                             </a>
                                         @endif
                                     </td>

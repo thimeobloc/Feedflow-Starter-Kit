@@ -106,6 +106,31 @@
                         </form>
                     @endif
 
+                    {{-- QUESTION CHOIX MULTIPLE --}}
+                    @if($question->question_type === "multiple")
+                        <form method="POST" action="{{ route('question.update', [$survey->id, $question->id]) }}">
+                            @csrf
+                            @method("PATCH")
+
+                            <h2 class="text-xl font-bold">{{ $question->title }} (Choix Multiple)</h2>
+
+                            <input type="hidden" name="question_type" value="multiple">
+                            <input type="text" name="title" value="{{ $question->title }}" class="hidden">
+
+                            <label>Options 1 :</label>
+                            <input type="text" name="options[]" value="{{ $question->options[0] ?? '' }}" style="border:2px solid black; margin-left:5px;">
+                            <label>Options 2 :</label>
+                            <input type="text" name="options[]" value="{{ $question->options[1] ?? '' }}" style="border:2px solid black; margin-left:5px;">
+                            <label>Options 3 :</label>
+                            <input type="text" name="options[]" value="{{ $question->options[2] ?? '' }}" style="border:2px solid black; margin-left:5px;">
+                            <label>Options 4 :</label>
+                            <input type="text" name="options[]" value="{{ $question->options[3] ?? '' }}" style="border:2px solid black; margin-left:5px;">
+
+
+                            <button style="margin-left:1300px">Valider</button>
+                        </form>
+                    @endif
+
                     {{-- QUESTION ÉCHELLE --}}
                     @if($question->question_type === "scale")
                         <form method="POST" action="{{ route('question.update', [$survey->id, $question->id]) }}">
