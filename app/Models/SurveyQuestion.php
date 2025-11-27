@@ -14,7 +14,7 @@ class SurveyQuestion extends Model
     protected $fillable = [
         'id', 'survey_id',
         'title', 'question_type', 'options',
-        'created_at', 'updated_at'
+        'created_at', 'updated_at', 'data'
     ];
     protected $casts = [
         'options' => 'array',
