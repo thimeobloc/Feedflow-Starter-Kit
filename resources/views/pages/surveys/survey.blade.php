@@ -19,7 +19,6 @@
         @if($survey)
             @method('PATCH')
         @endif
-        {{--        <meta name="csrf-token" content="{{ csrf_token() }}">--}}
 
         <div>
             <label for="title">Titre :</label>
