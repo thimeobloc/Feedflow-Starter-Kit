@@ -3,6 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\OrganizationController;
 use App\Http\Controllers\SurveyController;
+use App\Http\Controllers\AnswerController;
 use App\Http\Controllers\QuestionsController;
 use Illuminate\Support\Facades\Route;
 
@@ -41,6 +42,11 @@ Route::get('/question/{token}', [SurveyController::class, 'showPublic'])->name('
 Route::patch('/survey/{survey}/question/{question}', [QuestionsController::class, 'update'])->name('question.update');
 Route ::post('/question/{survey}', [QuestionsController::class, 'store'])->name('question.store');
 
-Route::post('/answers/store', [QuestionsController::class, 'store'])->name('answers.store');
+
+Route::prefix('answer')->group(function () {
+    Route::get('/{token}', [AnswerController::class, 'index'])->name('answer');
+    Route::post('/store', [AnswerController::class, 'store'])->name('answer.store');
+}); 
+
 
 require __DIR__.'/auth.php';

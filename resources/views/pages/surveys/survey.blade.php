@@ -60,7 +60,7 @@
             <p class="text-gray-600">Aucun sondage trouvé.</p>
         @else
             @foreach ($surveys as $survey)
-                <a href="{{ route('question', $survey->token) }}" target="_blank" class="text-blue-600 underline">
+                <a href="{{ route('answer', ['token' => $survey->token]) }}">
                     <div class="border rounded p-4 mb-4 bg-white shadow">
                         <h2 class="text-xl font-bold">{{ $survey->title }}</h2>
                         <p>{{ $survey->description }}</p>
@@ -72,6 +72,8 @@
                             <br>
                             Anonyme : {{ $survey->is_anonymous }}
                         </div>
+                        <a href="{{ route('question', $survey->token) }}">Ajouter des questions</a>
+                        <br>
                         <a href="{{ route('survey', $survey) }}">Modifier</a>
                         <form action="{{ route('survey.destroy', $survey) }}" method="POST">
                             @csrf

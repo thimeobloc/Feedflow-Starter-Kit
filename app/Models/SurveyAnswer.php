@@ -9,13 +9,17 @@ class SurveyAnswer extends Model
 {
     use HasFactory;
 
-    protected $table    = 'surveys';
+    protected $table    = 'survey_answers';
     public $timestamps  = true;
     protected $fillable = [
-        'id', 'survey_id', 'survey_question_id', 'user_id',
+        'survey_id',
+        'question_id',
         'answer',
-        'created_at', 'updated_at'
+        'user_id'
     ];
     protected $casts = [
+        'answer'     => 'json',
+        'created_at' => 'datetime:Y-m-d H:i:s',
+        'updated_at' => 'datetime:Y-m-d H:i:s'
     ];
 }
