@@ -19,6 +19,12 @@ class Survey extends Model
     protected $casts = [
     ];
 
+    /**
+     * Relation
+     *
+     * Cette méthode permet d'accéder aux questions liées à un sondage :
+     * $survey->questions renvoie toutes les SurveyQuestion associées.
+     */
     public function questions()
     {
         return $this->hasMany(SurveyQuestion::class);
