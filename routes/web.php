@@ -5,6 +5,7 @@ use App\Http\Controllers\OrganizationController;
 use App\Http\Controllers\SurveyController;
 use App\Http\Controllers\AnswerController;
 use App\Http\Controllers\QuestionsController;
+use App\Http\Controllers\StatsController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', fn() => view('welcome'));
@@ -47,6 +48,8 @@ Route::prefix('answer')->group(function () {
     Route::get('/{token}', [AnswerController::class, 'index'])->name('answer');
     Route::post('/store', [AnswerController::class, 'store'])->name('answer.store');
 }); 
-
+// Statistiques sondage
+Route::get('/surveys/stats/{token?}', [StatsController::class, 'index'])->name('surveys.stats');
+Route::post('/surveys/stats/generate', [StatsController::class, 'store'])->name('surveys.stats.store');
 
 require __DIR__.'/auth.php';
