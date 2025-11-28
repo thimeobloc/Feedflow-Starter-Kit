@@ -55,8 +55,8 @@ Route::prefix('answer')->group(function () {
     Route::get('/{token}', [AnswerController::class, 'index'])->name('answer');
     Route::post('/store', [AnswerController::class, 'store'])->name('answer.store');
 }); 
-// Statistiques sondage
-Route::get('/surveys/stats/{token?}', [StatsController::class, 'index'])->name('surveys.stats');
+// Survey Stats
+Route::get('/surveys/stats/{$surveyId}', [StatsController::class, 'index'])->name('surveys.stats');
 Route::post('/surveys/stats/generate', [StatsController::class, 'store'])->name('surveys.stats.store');
 
 // Auth routes

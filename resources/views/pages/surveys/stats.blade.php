@@ -1,35 +1,31 @@
 @extends('layouts.app')
-<head>
-    <title>Survey Statistics</title>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-</head>
 
 @section('content')
-    <div class="container">
-        <h1>Survey Statistics</h1>
-        <canvas id="myChart" width="400" height="200"></canvas>
+
+<h1>{{ $stats->surveyTitle }}</h1>
+
+@foreach($stats->questions as $i => $question)
+    <div class="mt-6">
+        <h2 class="text-lg font-bold">{{ $question->title }}</h2>
+
+        <canvas id="chart{{ $i }}" width="600" height="300"></canvas>
+
+        <script>
+            const ctx{{ $i }} = document.getElementById('chart{{ $i }}');
+
+            new Chart(ctx{{ $i }}, {
+                type: '{{ $i === 0 ? "bar" : "pie" }}',
+                data: {
+                    labels: @json($question->labels),
+                    datasets: [{
+                        label: "Réponses",
+                        data: @json($question->values),
+                        borderWidth: 1
+                    }]
+                }
+            });
+        </script>
     </div>
+@endforeach
+
 @endsection
-
-<script>
-  const ctx = document.getElementById('myChart');
-
-  new Chart(ctx, {
-    type: 'circle',
-    data: {
-      labels: ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimaanche'],
-      datasets: [{
-        label: 'Nombre de réponses par jour',
-        data: [78, 56, 23, 8, 2, 3],
-        borderWidth: 1
-      }]
-    },
-    options: {
-      scales: {
-        y: {
-          beginAtZero: true
-        }
-      }
-    }
-  });
-</script>
