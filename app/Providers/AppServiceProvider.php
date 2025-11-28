@@ -10,7 +10,7 @@ class AppServiceProvider extends ServiceProvider
      * Register any application services.
      */
 
-    //Link event and listener
+    //4Link event and listener
     protected $listen = [
         \App\Events\SurveyClosed::class => [
             \App\Listeners\SendFinalReportOnClose::class,

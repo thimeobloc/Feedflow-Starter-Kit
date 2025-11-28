@@ -25,7 +25,7 @@ class CheckForSurveyToClose extends Command
      * Execute the console command.
      */
 
-
+    //1Verify survey to close
     //Function listening the evenment to inactive it after the date
     public function handle()
     {

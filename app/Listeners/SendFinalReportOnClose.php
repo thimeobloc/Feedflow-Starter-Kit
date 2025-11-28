@@ -6,7 +6,7 @@ use App\Events\SurveyClosed;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Support\Facades\Mail;
-
+use Illuminate\Mail\Mailable;
 class SendFinalReportOnClose implements ShouldQueue
 
 {
@@ -21,11 +21,11 @@ class SendFinalReportOnClose implements ShouldQueue
     /**
      * Handle the event.
      */
-
+    //3Take the event and send email
     //Function to send email to testfeedflow@gmail.com
     public function handle(SurveyClosed $event): void
     {
         Mail::to('testfeedflow@gmail.com')->send(
-            new SurveyClosedMail($event->survey));
+            new SurveyClosed($event->survey));
     }
 }

@@ -19,6 +19,7 @@ class SurveyClosed
      * Create a new event instance.
      */
 
+    //2 The event transport survey
     public Survey $survey;
     public function __construct(Survey $survey)
     {
