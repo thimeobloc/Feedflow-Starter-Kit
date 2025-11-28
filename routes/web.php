@@ -50,7 +50,7 @@ Route::post('/question/{survey}', [QuestionsController::class, 'store'])->name('
 
 // Store survey answers
 Route::prefix('answer')->group(function () {
-    Route::get('/{token}', [AnswerController::class, 'index'])->name('answer');
+    Route::get('/{token?}', [AnswerController::class, 'index'])->name('answer');
     Route::post('/store', [AnswerController::class, 'store'])->name('answer.store');
 });
 

@@ -149,7 +149,7 @@
                         @endif
 
                         <div class="survey-actions">
-                            <a href="{{ route('answer', ['token' => $survey->token]) }}">Répondre</a>
+                            <a href="{{ route('answer', [$survey->token]) }}">Répondre</a>
                             <a href="{{ route('question', $survey->token) }}">Ajouter questions</a>
                             <a href="{{ route('survey', [ $organizationId,$survey->id]) }}">Modifier</a>
 
