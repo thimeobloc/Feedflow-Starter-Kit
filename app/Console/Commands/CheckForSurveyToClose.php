@@ -31,8 +31,8 @@ class CheckForSurveyToClose extends Command
     {
         Survey::where('end_date', '<=', now())
             ->whereNotNull('token')
-            //ChunkById load only 100 surveys
-            ->chunkById(100, function ($surveys) {
+            //ChunkById load only 10 surveys in memory
+            ->chunkById(10, function ($surveys) {
                 foreach ($surveys as $survey) {
                     DB::transaction(function () use ($survey) {
                         //Refresh database
