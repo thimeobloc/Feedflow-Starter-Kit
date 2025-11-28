@@ -41,11 +41,11 @@ class SurveyPolicy
     }
 
     /**
-     * Determine whether the user can delete the model.
+     * Determine whether the user can delete the model  : if the user is admin or if the user is the owner of the survey .
      */
     public function delete(User $user, Survey $survey): bool
     {
-        return $user->role === 'admin' || $survey->user_id === $user->id;;
+        return $user->role === 'admin' || $survey->user_id === $user->id;
     }
 
     /**

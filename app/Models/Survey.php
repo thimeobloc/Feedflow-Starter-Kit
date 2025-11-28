@@ -20,10 +20,10 @@ class Survey extends Model
     ];
 
     /**
-     * Relation
+     * RelationShip
      *
-     * Cette méthode permet d'accéder aux questions liées à un sondage :
-     * $survey->questions renvoie toutes les SurveyQuestion associées.
+     * This method allows access to questions related to a survey:
+     * $survey->questions all return the associated SurveyQuestion.
      */
     public function questions()
     {

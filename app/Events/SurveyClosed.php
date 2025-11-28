@@ -36,4 +36,13 @@ class SurveyClosed
             new PrivateChannel('channel-name'),
         ];
     }
+
+
+    //Content of the email
+    public function build()
+    {
+        return $this->subject('Fin de sondage')
+                    ->view('emailSurvey')
+                    ->with(['survey' => $this->survey]);
+    }
 }

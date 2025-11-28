@@ -15,7 +15,7 @@ class StoreSurveyRequest extends FormRequest
     }
 
     /**
-     * Obtenir les règles de validation
+     * Validation rules
      *
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
@@ -31,7 +31,7 @@ class StoreSurveyRequest extends FormRequest
     }
 
     /**
-     * Message d'erreur personnalisé
+     * Personnalize error message
      */
     public function messages(): array{
         return [

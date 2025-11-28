@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\DB;
 final class UpdateSurveyQuestionAction
 {
     public function __construct() {}
-
+    //Update questions to make the differents awnsers
     public function execute(SurveyQuestionDTO $dto, $survey, $question): SurveyQuestion
     {
         return DB::transaction(function () use ($dto, $survey, $question) {
