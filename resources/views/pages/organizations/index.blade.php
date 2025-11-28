@@ -45,30 +45,30 @@
                                     <td class="px-4 py-2 border-b">{{ $org->created_at->format('d/m/Y H:i') }}</td>
                                     <td class="px-4 py-2 border-b">{{ $org->updated_at->format('d/m/Y H:i') }}</td>
                                     <td class="px-4 py-2 border-b">
-                                        @if($org->pivot->role === 'admin')
+                                    @if($org->pivot->role === 'admin')
+                                        <!-- Edit organization -->
+                                        <a href="{{ route('organizations.updateForm', $org->id) }}"
+                                        class="px-3 py-1 bg-yellow-600 text-black rounded hover:bg-yellow-700">
+                                            Modifier
+                                        </a>
 
-                                            <!-- Edit organization -->
-                                            <a href="{{ route('organizations.updateForm', $org->id) }}" class="px-3 py-1 bg-yellow-600 text-black rounded hover:bg-yellow-700">
-                                                Modifier
-
-                                            </a>
-
-                                            <!-- Delete organization -->
-                                            <form action="{{ route('organizations.destroy', $org->id) }}" method="POST" class="inline-block" onsubmit="return confirm('Delete this organization?');">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit" class="px-3 py-1 bg-red-600 text-white rounded hover:bg-red-700">
-                                                    Delete
-                                                </button>
-                                            </form>
-
-                                            <!-- Link to surveys -->
-                                            <a href="{{ route('survey', $org->id) }}" class="px-3 py-1 bg-yellow-600 text-black rounded hover:bg-yellow-700">
-                                                Sondages
-
-                                            </a>
-                                        @endif
-                                    </td>
+                                        <!-- Delete organization -->
+                                        <form action="{{ route('organizations.destroy', $org->id) }}" method="POST"
+                                            class="inline-block"
+                                            onsubmit="return confirm('Delete this organization?');">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="px-3 py-1 bg-red-600 text-white rounded hover:bg-red-700">
+                                                Delete
+                                            </button>
+                                        </form>
+                                    @endif
+                                    <!-- Accessible by ALL members -->
+                                    <a href="{{ route('survey', $org->id) }}"
+                                    class="px-3 py-1 bg-blue-600 text-white rounded hover:bg-blue-700 ml-2">
+                                        Sondages
+                                    </a>
+                                </td>
                                 </tr>
                             @endforeach
                         </tbody>
