@@ -13,6 +13,8 @@ final class SurveyDTO
      * Constructeur du DTO.
      * On y définit les données nécessaires à la création d’un article.
      */
+
+    //Datas to create survey
     private function __construct(
         public string $title,
         public string $description,
@@ -25,6 +27,8 @@ final class SurveyDTO
      * Méthode statique permettant de créer le DTO à partir d'une requête validée.
      * Cela permet de centraliser la logique de transformation des données.
      */
+
+    //
     public static function fromRequest(StoreSurveyRequest $request): self
     {
         return new self(

@@ -32,8 +32,8 @@ Route::middleware('auth')->group(function () {
     Route::delete('/organization/destroy/{organization}', [OrganizationController::class, 'destroy'])->name('organizations.destroy');
 
 
-    // Sondages
-        Route::prefix('survey')->group(function () {
+    // Surveys
+    Route::prefix('survey')->group(function () {
         Route::get('/{organization?}/{survey?}', [SurveyController::class, 'index'])->name('survey');
 
         Route::post('/store/{organization}', [SurveyController::class, 'store'])->name('survey.store');
@@ -42,19 +42,18 @@ Route::middleware('auth')->group(function () {
     });
 });
 
-
 // Sondage public accessible sans login
-Route::get('/question/{token}', [SurveyController::class, 'showPublic'])->name('question');
+Route::get('/question/{token?}', [SurveyController::class, 'showPublic'])->name('question');
 Route::patch('/survey/{survey}/question/{question}', [QuestionsController::class, 'update'])->name('question.update');
-Route ::post('/question/{survey}', [QuestionsController::class, 'store'])->name('question.store');
+Route::post('/question/{survey}', [QuestionsController::class, 'store'])->name('question.store');
 
 
 // Store survey answers
 Route::prefix('answer')->group(function () {
-    Route::get('/{token}', [AnswerController::class, 'index'])->name('answer');
+    Route::get('/{token?}', [AnswerController::class, 'index'])->name('answer');
     Route::post('/store', [AnswerController::class, 'store'])->name('answer.store');
 });
 
 
 // Auth routes
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';

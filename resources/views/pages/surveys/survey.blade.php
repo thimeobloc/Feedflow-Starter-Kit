@@ -91,15 +91,14 @@
         </style>
     </head>
     <body>
-        <div class="container">
-            <h1>{{ $survey ? "Modifier" : "Créer un nouveau" }} Sondage</h1>
+    <div class="container">
+        <h1>{{ $survey ? "Modifier" : "Créer un nouveau" }} Sondage</h1>
 
-            <form id="surveyForm" method="POST" action="{{ $survey ? route('survey.update', $survey) : route('survey.store', $organizationId) }}">
-                @csrf
-                @if($survey)
-                    @method('PATCH')
-                @endif
-
+        <form id="surveyForm" method="POST" action="{{ $survey ? route('survey.update', $survey) : route('survey.store', $organizationId) }}">
+            @csrf
+            @if($survey)
+                @method('PATCH')
+            @endif
                 <div>
                     <label for="title">Titre :</label>
                     <input type="text" name="title" id="title" value="{{ $survey->title ?? null }}" required>
@@ -159,8 +158,8 @@
                         </div>
                     @endforeach
                 @endif
-            </div>
         </div>
+    </div>
     </body>
     </html>
 </x-app-layout>

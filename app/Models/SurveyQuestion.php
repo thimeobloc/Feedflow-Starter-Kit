@@ -20,6 +20,12 @@ class SurveyQuestion extends Model
         'options' => 'array',
     ];
 
+    /**
+     * RelationShip
+     *
+     * This method allows access to questions related to a survey:
+     *
+     */
     public function survey()
     {
         return $this->belongsTo(Survey::class);

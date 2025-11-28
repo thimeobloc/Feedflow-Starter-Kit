@@ -14,7 +14,7 @@ use Illuminate\Support\Carbon;
 class SurveyController extends Controller
 {
     /**
-     * Affiche le formulaire d'un sondage et la liste des sondages
+     * Show surveys
      */
     public function index( $organizationId = null, Survey $survey = null)
     {
@@ -33,14 +33,14 @@ class SurveyController extends Controller
 
         return view('pages.surveys.survey', [
             "organizationId" => $organizationId,
-            "organization" => $organization, // organisation unique ou null
+            "organization" => $organization,
             "surveys" => $surveys,
             "survey" => $survey,
         ]);
     }
 
     /**
-     * Enregistrer un sondage
+     * Create survey
      */
     public function store(StoreSurveyRequest $request, StoreSurveyAction $action, $organizationId)
     {
@@ -54,18 +54,18 @@ class SurveyController extends Controller
     }
 
     /**
-     * Supprimer un sondage
+     * Delete survey
      */
     public function destroy(Survey $survey)
     {
         $survey->delete();
 
-        // Redirection vers la page de la même organisation
+        // Return to page same organization
         return redirect()->route('survey', $survey->organization_id);
     }
 
     /**
-     * Mettre à jour un sondage
+     * Update survey
      */
     public function update(UpdateSurveyRequest $request, UpdateSurveyAction $action, Survey $survey)
     {
@@ -77,7 +77,7 @@ class SurveyController extends Controller
     }
 
     /**
-     * Affiche le sondage public via son token
+     * ShowPublic show the survey by the token
      */
     public function showPublic($token)
     {
