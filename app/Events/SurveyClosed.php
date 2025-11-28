@@ -2,6 +2,7 @@
 
 namespace App\Events;
 
+use App\Models\Survey;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PresenceChannel;
@@ -17,9 +18,11 @@ class SurveyClosed
     /**
      * Create a new event instance.
      */
-    public function __construct()
+
+    public Survey $survey;
+    public function __construct(Survey $survey)
     {
-        //
+        $this->survey = $survey;
     }
 
     /**

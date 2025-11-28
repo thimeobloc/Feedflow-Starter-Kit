@@ -16,7 +16,7 @@ class SurveyController extends Controller
     /**
      * Affiche le formulaire d'un sondage et la liste des sondages
      */
-    public function index(Survey $survey = null, $organizationId = null)
+    public function index( $organizationId = null, Survey $survey = null)
     {
         $user = auth()->user();
 
@@ -32,8 +32,8 @@ class SurveyController extends Controller
         })->orderBy('created_at', 'desc')->get();
 
         return view('pages.surveys.survey', [
-            "organization" => $organization, // organisation unique ou null
             "organizationId" => $organizationId,
+            "organization" => $organization, // organisation unique ou null
             "surveys" => $surveys,
             "survey" => $survey,
         ]);

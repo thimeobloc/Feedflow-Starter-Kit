@@ -8,20 +8,23 @@ use App\Http\Controllers\QuestionsController;
 use App\Http\Controllers\StatsController;
 use Illuminate\Support\Facades\Route;
 
+// Home page
 Route::get('/', fn() => view('welcome'));
 
+// Dashboard (auth + verified)
 Route::get('/dashboard', fn() => view('dashboard'))
     ->middleware(['auth', 'verified'])
     ->name('dashboard');
 
+// Authenticated routes
 Route::middleware('auth')->group(function () {
 
-    // Profil
+    // Profile
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    // Organisations
+    // Organizations
     Route::get('/organization', [OrganizationController::class, 'index'])->name('organizations.index');
     Route::get('/organization/create', [OrganizationController::class, 'create'])->name('organizations.create');
     Route::post('/organization/store', [OrganizationController::class, 'store'])->name('organizations.store');
@@ -29,14 +32,17 @@ Route::middleware('auth')->group(function () {
     Route::patch('/organization/update/{organization}', [OrganizationController::class, 'update'])->name('organizations.update');
     Route::delete('/organization/destroy/{organization}', [OrganizationController::class, 'destroy'])->name('organizations.destroy');
 
+
     // Sondages
-    Route::prefix('survey')->group(function () {
-        Route::get('/{organization?}', [SurveyController::class, 'index'])->name('survey');
+        Route::prefix('survey')->group(function () {
+        Route::get('/{organization?}/{survey?}', [SurveyController::class, 'index'])->name('survey');
+
         Route::post('/store/{organization}', [SurveyController::class, 'store'])->name('survey.store');
         Route::patch('/update/{survey}', [SurveyController::class, 'update'])->name('survey.update');
         Route::delete('/delete/{survey}', [SurveyController::class, 'destroy'])->name('survey.destroy');
     });
 });
+
 
 // Sondage public accessible sans login
 Route::get('/question/{token}', [SurveyController::class, 'showPublic'])->name('question');
@@ -44,6 +50,7 @@ Route::patch('/survey/{survey}/question/{question}', [QuestionsController::class
 Route ::post('/question/{survey}', [QuestionsController::class, 'store'])->name('question.store');
 
 
+// Store survey answers
 Route::prefix('answer')->group(function () {
     Route::get('/{token}', [AnswerController::class, 'index'])->name('answer');
     Route::post('/store', [AnswerController::class, 'store'])->name('answer.store');
@@ -52,4 +59,5 @@ Route::prefix('answer')->group(function () {
 Route::get('/surveys/stats/{token?}', [StatsController::class, 'index'])->name('surveys.stats');
 Route::post('/surveys/stats/generate', [StatsController::class, 'store'])->name('surveys.stats.store');
 
+// Auth routes
 require __DIR__.'/auth.php';

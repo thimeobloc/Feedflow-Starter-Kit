@@ -14,7 +14,7 @@ use App\Http\Requests\Organization\DeleteOrganization;
 class OrganizationController extends Controller
 {
     /**
-     * Affiche la liste des organisations de l'utilisateur
+     * Display a list of the authenticated user's organizations.
      */
     public function index()
     {
@@ -25,7 +25,7 @@ class OrganizationController extends Controller
     }
 
     /**
-     * Affiche le formulaire de création d'une organisation
+     * Show the form for creating a new organization.
      */
     public function create()
     {
@@ -33,13 +33,15 @@ class OrganizationController extends Controller
     }
 
     /**
-     * Affiche le formulaire de mise à jour d'une organisation
+     * Show the form for updating an existing organization.
      */
     public function updateForm(Organization $organization)
     {
         $this->authorize('update', $organization);
+
         $users = \App\Models\User::all();
-        $organization->load('members'); // Important pour récupérer les rôles
+        $organization->load('members'); // Load members to access pivot roles
+
         $userRoles = [];
         foreach ($users as $user) {
             $member = $organization->members->firstWhere('id', $user->id);
@@ -50,37 +52,43 @@ class OrganizationController extends Controller
     }
 
     /**
-     * Enregistre une nouvelle organisation
+     * Store a newly created organization.
      */
     public function store(StoreOrganization $request, StoreOrganizationAction $action)
     {
-        $dto = OrganizationDTO::fromRequest($request);
         $this->authorize('create', Organization::class);
+
+        $dto = OrganizationDTO::fromRequest($request);
         $organization = $action->handle($dto);
 
-        return redirect()->route('organizations.index')->with('success', 'Organisation créée avec succès !');
+        return redirect()->route('organizations.index')
+            ->with('success', 'Organization created successfully!');
     }
 
     /**
-     * Met à jour une organisation existante
+     * Update an existing organization.
      */
     public function update(UpdateOrganization $request, Organization $organization, UpdateOrganizationAction $action)
     {
         $this->authorize('update', $organization);
+
         $dto = OrganizationDTO::fromRequest($request);
         $action->handle($dto, $organization);
 
-        return redirect()->route('organizations.index')->with('success', 'Organisation mise à jour avec succès !');
+        return redirect()->route('organizations.index')
+            ->with('success', 'Organization updated successfully!');
     }
 
     /**
-     * Supprime une organisation
+     * Delete an organization.
      */
     public function destroy(DeleteOrganization $request, Organization $organization, DeleteOrganizationAction $action)
     {
         $this->authorize('delete', $organization);
+
         $action->handle($organization);
 
-        return redirect()->route('organizations.index')->with('success', 'Organisation supprimée avec succès !');
+        return redirect()->route('organizations.index')
+            ->with('success', 'Organization deleted successfully!');
     }
 }
