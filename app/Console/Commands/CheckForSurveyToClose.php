@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Console\Commands;
-use Illuminate\Support\Facades\DB; // ← ICI !
+use Illuminate\Support\Facades\DB;
 use Illuminate\Console\Command;
 use App\Models\Survey;
 use App\Events\SurveyClosed;
@@ -45,7 +45,7 @@ class CheckForSurveyToClose extends Command
                         //Save the new survey
                         $survey->save();
 
-                        //Do event
+                        // Trigger the SurveyClosed event for this survey
                         event(new SurveyClosed($survey));
                     });
                 }
