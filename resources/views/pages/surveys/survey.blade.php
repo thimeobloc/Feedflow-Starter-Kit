@@ -129,6 +129,7 @@
                 </div>
 
                 <button type="submit">{{ $survey ? 'Modifier' : 'Créer' }} le sondage</button>
+                <a href="{{ route('survey', $organizationId) }}">Refresh</a>
             </form>
 
             <div id="response" style="margin-top:20px;"></div>

@@ -65,7 +65,7 @@
                                     @endif
                                     <!-- Accessible by ALL members -->
                                     <a href="{{ route('survey', $org->id) }}"
-                                    class="px-3 py-1 bg-blue-600 text-white rounded hover:bg-blue-700 ml-2">
+                                    class="px-3 py-1 bg-blue-600 text-black rounded hover:bg-blue-700 ml-2">
                                         Sondages
                                     </a>
                                 </td>

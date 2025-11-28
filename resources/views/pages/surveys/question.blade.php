@@ -93,14 +93,6 @@
     </head>
 
 
-
-
-
-
-
-
-
-
     <body>
         <div class="container">
             <h1>{{ $survey->title }}</h1>
@@ -154,7 +146,7 @@
 
                                 <input type="hidden" name="question_type" value="text">
 
-                                <button style="margin-left:1300px">Valider</button>
+                                <button style="margin-left:350px">Valider</button>
                             </form>
                         @endif
 
@@ -178,7 +170,7 @@
                                 <label>Options 4 :</label>
                                 <input type="text" name="options[]" value="{{ $question->options[3] ?? '' }}" style="border:2px solid black; margin-left:5px;">
 
-                                <button style="margin-left:1300px">Valider</button>
+                                <button style="margin-left:350px">Valider</button>
                             </form>
                         @endif
 
@@ -217,7 +209,7 @@
 
                                 <input type="hidden" name="question_type" value="scale">
 
-                                <button style="margin-left:1300px">Valider</button>
+                                <button style="margin-left:350px">Valider</button>
                             </form>
                         @endif
 

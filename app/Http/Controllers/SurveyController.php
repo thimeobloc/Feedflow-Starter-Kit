@@ -47,7 +47,7 @@ class SurveyController extends Controller
         $dto = SurveyDTO::fromRequest($request);
 
         // Exécuter l'action avec l'ID de l'organisation
-        $action->execute($dto, (int) $organizationId);
+        $action->execute($dto, (int) $organizationId, auth()->user());
 
         // Redirection vers la page des sondages de cette organisation
         return redirect()->route('survey', $organizationId);

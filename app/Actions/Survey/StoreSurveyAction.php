@@ -1,5 +1,6 @@
 <?php
 namespace App\Actions\Survey;
+use App\Models\User;
 use Illuminate\Support\Str;
 use App\DTOs\SurveyDTO;
 use App\Models\Survey;
@@ -15,13 +16,13 @@ final class StoreSurveyAction
      * Cette classe ne connaît ni la Request, ni le contrôleur.
      * Elle se concentre uniquement sur le "métier".
      */
-    public function execute(SurveyDTO $dto, int $organization): Survey
+    public function execute(SurveyDTO $dto, int $organization, User $user): Survey
     {
-        return DB::transaction(function () use ($dto, $organization) {
+        return DB::transaction(function () use ($dto, $organization, $user) {
 
             return Survey::create([
                 'organization_id' => $organization,
-                'user_id'         => 1,
+                'user_id'         =>  $user->id,
                 'title' => $dto->title,
                 'description' => $dto->description,
                 'start_date' => $dto->startDate,
