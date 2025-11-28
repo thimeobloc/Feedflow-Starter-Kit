@@ -31,7 +31,7 @@ class UpdateSurveyRequest extends FormRequest
     }
 
     /**
-     * Message d'erreur personnalisé
+     * Personalize error message
      */
     public function messages(): array{
         return [

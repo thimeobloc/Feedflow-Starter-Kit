@@ -6,6 +6,8 @@ use App\Http\Requests\Survey\StoreSurveyQuestionRequest;
 
 final class SurveyQuestionDTO
 {
+
+    //Datas to create a question
     private function __construct(
         public string $title,
         public string $question_type,
